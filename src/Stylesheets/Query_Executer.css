@@ -1,0 +1,10 @@
+#queryTitle:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#saveQueryAccordion {
+    border: 2px solid #C0C0C0;
+    border-radius: 5px;
+    padding: 8px;
+}
