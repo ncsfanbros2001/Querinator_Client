@@ -60,24 +60,17 @@ export default class QueryStore {
     executeQuery = async (queryString: string) => {
         this.setIsLoading(true)
 
-        if (queryString.toLowerCase().includes("select")) {
-            this.setTableHidden(false)
-        }
-        else {
-            this.setTableHidden(true)
-        }
-
         await axiosAgents.QueryActions.queryResults(queryString)
             .then(response => {
                 this.setQueryResult(this.parseToJSON(response))
 
-                if (queryString.toLowerCase().includes('select')) {
+                if (queryString.toLowerCase().includes('select') && response?.result?.length > 0) {
                     this.setColumnNames(
                         [...Object.keys(response?.result[0])]
                     )
                     this.setTableHidden(false)
                 }
-                else {
+                else if (queryString.toLowerCase().includes('select') === false) {
                     this.setTableHidden(true)
                 }
             })
@@ -85,8 +78,8 @@ export default class QueryStore {
                 this.setQueryResult(this.parseToJSON(error?.response?.data))
             })
 
-        await this.setEntireResultHidden(false)
-        await this.delay()
+        this.setEntireResultHidden(false)
+        this.delay()
         this.setIsLoading(false)
     }
 
