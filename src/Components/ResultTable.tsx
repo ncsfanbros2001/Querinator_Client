@@ -2,7 +2,6 @@ import { CSVLink } from 'react-csv'
 import { useStore } from '../Stores/store'
 import Spinner from '../Helpers/Spinner'
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
 
 const ResultTable = () => {
     const { queryStore } = useStore()

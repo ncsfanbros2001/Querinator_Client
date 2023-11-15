@@ -53,10 +53,6 @@ export default class QueryStore {
         }
     }
 
-    delay = () => {
-        return new Promise(resolve => setTimeout(resolve, 1000));
-    };
-
     executeQuery = async (queryString: string) => {
         this.setIsLoading(true)
 
@@ -79,12 +75,10 @@ export default class QueryStore {
             })
 
         this.setEntireResultHidden(false)
-        this.delay()
         this.setIsLoading(false)
     }
 
     saveQuery = async (queryToSave: any) => {
-        this.setIsLoading(true)
         await axiosAgents.QueryActions.saveQuery(queryToSave)
             .then(() => {
                 toast.success("Query saved successfully")
@@ -95,8 +89,6 @@ export default class QueryStore {
 
         await this.setTableHidden(true)
         await this.setEntireResultHidden(true)
-        await this.delay()
-        this.setIsLoading(false)
     }
 
     loadSavedQuery = async () => {
@@ -106,10 +98,20 @@ export default class QueryStore {
             .then((response: any) => {
                 this.setQueryRecommendations(response?.result)
             })
-            .catch(() => {
-                toast.error("Load query recommendations failed")
+            .catch((error) => {
+                toast.error(error?.response?.data?.errorMessages[0])
             })
 
         this.setIsLoading(false)
+    }
+
+    deleteSavedQuery = async (queryId: string) => {
+        await axiosAgents.QueryActions.deleteSavedQuery(queryId)
+            .then(() => {
+                toast.success("Deleted successfully")
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.errorMessages[0])
+            })
     }
 }

@@ -1,4 +1,5 @@
-#queryTitle:focus {
+#queryTitle:focus,
+#queryInput:focus {
     outline: none;
     box-shadow: none;
 }

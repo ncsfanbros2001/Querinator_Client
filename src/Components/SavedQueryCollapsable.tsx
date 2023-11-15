@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom"
 import { SavedQuery } from "../models/SavedQuery"
 import '../Stylesheets/Collapsable.css'
 import Spinner from "../Helpers/Spinner"
+import { useStore } from "../Stores/store"
+import UpdateModal from "./UpdateModal"
+import { useState } from "react"
 
 interface Props {
     savedQueries: SavedQuery[] | undefined
@@ -9,8 +12,12 @@ interface Props {
     isLoading: boolean
 }
 
-const Collapsable = ({ savedQueries, queryGroupName, isLoading }: Props) => {
+const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Props) => {
     const navigate = useNavigate()
+    const { queryStore } = useStore()
+    const { deleteSavedQuery } = queryStore
+
+    const [updateId, setUpdateId] = useState<string>("")
 
     const executeQuery = (query: string) => {
         navigate(`/query/${query}`)
@@ -41,9 +48,16 @@ const Collapsable = ({ savedQueries, queryGroupName, isLoading }: Props) => {
                                         <h5>{item.title}</h5>
                                     </div>
 
-                                    <div className="d-flex justify-content-end" style={{ width: '15%' }}>
-                                        <button className='btn btn-success' onClick={() => executeQuery(item.query)}>
-                                            <i className="bi bi-lightning"></i> Execute
+                                    <div className="d-flex justify-content-evenly" style={{ width: '15%' }}>
+                                        <button className='btn btn-success function-button' onClick={() => executeQuery(item.query)}>
+                                            <i className="bi bi-lightning"></i>
+                                        </button>
+                                        <button className='btn btn-warning function-button' onClick={() => { setUpdateId(item.id) }}
+                                            data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                                            <i className="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button className='btn btn-danger function-button' onClick={() => deleteSavedQuery(item.id)}>
+                                            <i className="bi bi-trash3"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -55,9 +69,11 @@ const Collapsable = ({ savedQueries, queryGroupName, isLoading }: Props) => {
 
                     </div>
                 </div>
+
+                <UpdateModal queryId={updateId} />
             </div>
         </>
     )
 }
 
-export default Collapsable
+export default SavedQueryCollapsable

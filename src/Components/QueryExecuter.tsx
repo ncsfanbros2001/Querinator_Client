@@ -7,6 +7,7 @@ import '../Stylesheets/Query_Executer.css'
 const QueryExecuter = () => {
     const [queryString, setQueryString] = useState<string>("");
     const [queryTitle, setQueryTitle] = useState<string>("");
+    const [saveMode, setSaveMode] = useState<boolean>(false);
 
     const { queryStore } = useStore()
     const { executeQuery, saveQuery, isLoading } = queryStore
@@ -29,8 +30,8 @@ const QueryExecuter = () => {
             <div className='form-group d-flex justify-content-center p-2'>
                 <h2 className='text-success mx-2'>YOUR QUERY:</h2>
 
-                <input type='text' className='form-cotrol w-50' style={{ height: 40, marginRight: '10px', paddingLeft: '10px' }}
-                    onChange={(e) => setQueryString(e.target.value)} ref={queryInputField} />
+                <input type='text' className='form-control w-50' style={{ height: 40, marginRight: '10px', paddingLeft: '10px' }}
+                    onChange={(e) => setQueryString(e.target.value)} ref={queryInputField} disabled={saveMode} id="queryInput" />
             </div>
 
             <div className='form-group d-flex justify-content-center p-2'>
@@ -40,7 +41,7 @@ const QueryExecuter = () => {
                 </button>
 
                 <button className='btn btn-primary mx-2' disabled={queryString == '' || isLoading} style={{ height: 40 }}
-                    data-bs-toggle="collapse" data-bs-target="#saveQueryAccordion">
+                    data-bs-toggle="collapse" data-bs-target="#saveQueryAccordion" onClick={() => setSaveMode(!saveMode)}>
                     <i className="bi bi-floppy"></i> Save Query
                 </button>
 
@@ -55,7 +56,7 @@ const QueryExecuter = () => {
                         <input type='text' className='form-control w-75' id="queryTitle" placeholder='Your query title...'
                             onChange={(e) => setQueryTitle(e.target.value)} />
 
-                        <button className='btn btn-primary mx-2 w-25'
+                        <button className='btn btn-primary mx-2 w-25' disabled={queryTitle == ''}
                             onClick={() => saveQuery({ title: queryTitle, query: queryString })}>
                             Save
                         </button>

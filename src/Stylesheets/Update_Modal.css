@@ -1,0 +1,9 @@
+.form-control {
+    border-radius: 5px;
+}
+
+#queryTitle:focus,
+#queryInput:focus {
+    outline: none;
+    box-shadow: none;
+}

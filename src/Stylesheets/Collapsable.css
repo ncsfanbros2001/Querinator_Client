@@ -3,3 +3,7 @@
     box-shadow: none !important;
     outline: 0px !important;
 }
+
+.function-button {
+    width: 30%;
+}
