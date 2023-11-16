@@ -19,11 +19,11 @@ const QueryExecuter = () => {
 
     useEffect(() => {
         if (param.query != null) {
+            executeQuery(param.query);
             setQueryString(param.query);
             (queryInputField.current as any).value = param.query;
-            executeQuery(param.query);
         }
-    }, [])
+    }, [param.query != null])
 
     return (
         <>
@@ -41,7 +41,7 @@ const QueryExecuter = () => {
             <div className='form-group d-flex justify-content-center p-2'>
                 <button
                     className='btn btn-success'
-                    disabled={queryString == '' || isLoading}
+                    disabled={queryString === '' || isLoading}
                     style={{ height: 40 }}
                     onClick={() => executeQuery(queryString)}>
                     <i className="bi bi-lightning"></i> Execute
@@ -49,7 +49,7 @@ const QueryExecuter = () => {
 
                 <button
                     className='btn btn-primary mx-2'
-                    disabled={queryString == '' || isLoading}
+                    disabled={queryString === '' || isLoading}
                     style={{ height: 40 }}
                     data-bs-toggle="collapse"
                     data-bs-target="#saveQueryAccordion"
@@ -73,7 +73,7 @@ const QueryExecuter = () => {
                         <input type='text' className='form-control w-75' id="queryTitle" placeholder='Your query title...'
                             onChange={(e) => setQueryTitle(e.target.value)} />
 
-                        <button className='btn btn-primary mx-2 w-25' disabled={queryTitle == ''}
+                        <button className='btn btn-primary mx-2 w-25' disabled={queryTitle === ''}
                             onClick={() => saveQuery({ title: queryTitle, query: queryString })}>
                             Save
                         </button>

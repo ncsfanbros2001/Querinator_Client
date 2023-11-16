@@ -17,38 +17,38 @@ export default class QueryStore {
         makeAutoObservable(this)
     }
 
-    private setEntireResultHidden = (value: boolean) => {
+    setEntireResultHidden = (value: boolean) => {
         this.entireResultHidden = value
     }
 
-    private setIsLoading = (value: boolean) => {
+    setIsLoading = (value: boolean) => {
         this.isLoading = value
     }
 
-    private setTableHidden = (value: boolean) => {
+    setTableHidden = (value: boolean) => {
         this.tableHidden = value
     }
 
-    private setQueryResult = (value: QueryResult) => {
+    setQueryResult = (value: QueryResult | undefined) => {
         this.queryResult = value
     }
 
-    private setQueryRecommendations = (savedQueries: SavedQuery[]) => {
+    setQueryRecommendations = (savedQueries: SavedQuery[]) => {
         const queryToPush: SavedQuery[] = []
         savedQueries.forEach((item) => queryToPush.push(item))
 
         this.savedQueries = queryToPush
     }
 
-    private setSingleSavedQuery = (savedQuery: SavedQuery) => {
+    setSingleSavedQuery = (savedQuery: SavedQuery) => {
         this.singleSavedQuery = savedQuery
     }
 
-    private setColumnNames = (value: string[]) => {
+    setColumnNames = (value: string[]) => {
         this.columnNames = value
     }
 
-    private parseToJSON = (value: any) => {
+    parseToJSON = (value: any) => {
         if (value !== undefined) {
             let jsonValue = JSON.parse(JSON.stringify(value))
             return jsonValue
@@ -141,7 +141,6 @@ export default class QueryStore {
     }
 
     loadOneSavedQuery = async (queryId: string) => {
-        this.setIsLoading(true)
         await axiosAgents.QueryActions.getOneSavedQuery(queryId)
             .then((response) => {
                 this.setSingleSavedQuery(response?.result)
@@ -149,6 +148,5 @@ export default class QueryStore {
             .catch((error) => {
                 toast.error(error?.response?.data?.errorMessages[0])
             })
-        this.setIsLoading(false)
     }
 }

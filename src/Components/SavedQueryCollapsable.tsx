@@ -16,12 +16,12 @@ interface Props {
 const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Props) => {
     const navigate = useNavigate()
     const { queryStore } = useStore()
-    const { deleteSavedQuery } = queryStore
+    const { deleteSavedQuery, executeQuery } = queryStore
 
     const [updateId, setUpdateId] = useState<string>("")
     const [updateMode, setUpdateMode] = useState<boolean>(false)
 
-    const executeQuery = (query: string) => {
+    const execute = (query: string) => {
         navigate(`/query/${query}`)
     }
 
@@ -51,17 +51,19 @@ const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Prop
                                     </div>
 
                                     <div className="d-flex justify-content-evenly" style={{ width: '15%' }}>
-                                        <button className='btn btn-success function-button' onClick={() => executeQuery(item.query)}>
+                                        <button className='btn btn-success function-button' disabled={isLoading}
+                                            onClick={() => execute(item.query)}>
                                             <i className="bi bi-lightning"></i>
                                         </button>
-                                        <button className='btn btn-warning function-button' onClick={() => {
+                                        <button className='btn btn-warning function-button' disabled={isLoading} onClick={() => {
                                             setUpdateId(item.id!)
                                             setUpdateMode(true)
                                         }}
                                             data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                                             <i className="bi bi-pencil-square"></i>
                                         </button>
-                                        <button className='btn btn-danger function-button' onClick={() => deleteSavedQuery(item.id!)}>
+                                        <button className='btn btn-danger function-button' disabled={isLoading}
+                                            onClick={() => deleteSavedQuery(item.id!)}>
                                             <i className="bi bi-trash3"></i>
                                         </button>
                                     </div>
