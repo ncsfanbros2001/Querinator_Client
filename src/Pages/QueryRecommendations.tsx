@@ -6,10 +6,10 @@ import { observer } from "mobx-react-lite"
 const QueryRecommendations = () => {
 
     const { queryStore } = useStore()
-    const { loadSavedQuery, savedQueries, isLoading } = queryStore
+    const { loadAllSavedQueries, savedQueries, isLoading } = queryStore
 
     useEffect(() => {
-        loadSavedQuery()
+        loadAllSavedQueries()
     }, [savedQueries.length == 0 || savedQueries])
 
     return (

@@ -1,5 +1,5 @@
 export interface SavedQuery {
-    id: string,
+    id?: string,
     title: string,
     query: string
 }

@@ -30,24 +30,41 @@ const QueryExecuter = () => {
             <div className='form-group d-flex justify-content-center p-2'>
                 <h2 className='text-success mx-2'>YOUR QUERY:</h2>
 
-                <input type='text' className='form-control w-50' style={{ height: 40, marginRight: '10px', paddingLeft: '10px' }}
-                    onChange={(e) => setQueryString(e.target.value)} ref={queryInputField} disabled={saveMode} id="queryInput" />
+                <input type='text'
+                    className='form-control w-50'
+                    style={{ height: 40, marginRight: '10px', paddingLeft: '10px' }}
+                    onChange={(e) => setQueryString(e.target.value)}
+                    ref={queryInputField} disabled={saveMode || isLoading}
+                    id="queryInput" />
             </div>
 
             <div className='form-group d-flex justify-content-center p-2'>
-                <button className='btn btn-success' disabled={queryString == '' || isLoading} style={{ height: 40 }}
+                <button
+                    className='btn btn-success'
+                    disabled={queryString == '' || isLoading}
+                    style={{ height: 40 }}
                     onClick={() => executeQuery(queryString)}>
                     <i className="bi bi-lightning"></i> Execute
                 </button>
 
-                <button className='btn btn-primary mx-2' disabled={queryString == '' || isLoading} style={{ height: 40 }}
-                    data-bs-toggle="collapse" data-bs-target="#saveQueryAccordion" onClick={() => setSaveMode(!saveMode)}>
+                <button
+                    className='btn btn-primary mx-2'
+                    disabled={queryString == '' || isLoading}
+                    style={{ height: 40 }}
+                    data-bs-toggle="collapse"
+                    data-bs-target="#saveQueryAccordion"
+                    onClick={() => setSaveMode(!saveMode)}>
                     <i className="bi bi-floppy"></i> Save Query
                 </button>
 
-                <button className='btn btn-warning' style={{ height: 40 }} onClick={() => navigate('/recommend')}>
+                <button
+                    className='btn btn-warning'
+                    style={{ height: 40 }}
+                    disabled={isLoading}
+                    onClick={() => navigate('/recommend')}>
                     <i className="bi bi-list-columns"></i>  Go To Query Recommedations
                 </button>
+
             </div>
 
             <div className="d-flex justify-content-center m-3">

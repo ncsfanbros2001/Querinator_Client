@@ -11,39 +11,44 @@ export default class QueryStore {
     tableHidden: boolean = false;
     savedQueries: SavedQuery[] = [];
     entireResultHidden: boolean = false;
+    singleSavedQuery: SavedQuery | null = null;
 
     constructor() {
         makeAutoObservable(this)
     }
 
-    setEntireResultHidden = (value: boolean) => {
+    private setEntireResultHidden = (value: boolean) => {
         this.entireResultHidden = value
     }
 
-    setIsLoading = (value: boolean) => {
+    private setIsLoading = (value: boolean) => {
         this.isLoading = value
     }
 
-    setTableHidden = (value: boolean) => {
+    private setTableHidden = (value: boolean) => {
         this.tableHidden = value
     }
 
-    setQueryResult = (value: QueryResult) => {
+    private setQueryResult = (value: QueryResult) => {
         this.queryResult = value
     }
 
-    setQueryRecommendations = (savedQueries: SavedQuery[]) => {
+    private setQueryRecommendations = (savedQueries: SavedQuery[]) => {
         const queryToPush: SavedQuery[] = []
         savedQueries.forEach((item) => queryToPush.push(item))
 
         this.savedQueries = queryToPush
     }
 
-    setColumnNames = (value: string[]) => {
+    private setSingleSavedQuery = (savedQuery: SavedQuery) => {
+        this.singleSavedQuery = savedQuery
+    }
+
+    private setColumnNames = (value: string[]) => {
         this.columnNames = value
     }
 
-    parseToJSON = (value: any) => {
+    private parseToJSON = (value: any) => {
         if (value !== undefined) {
             let jsonValue = JSON.parse(JSON.stringify(value))
             return jsonValue
@@ -51,6 +56,10 @@ export default class QueryStore {
         else {
             return undefined
         }
+    }
+
+    unloadSingleSavedQuery = () => {
+        this.singleSavedQuery = null
     }
 
     executeQuery = async (queryString: string) => {
@@ -79,6 +88,7 @@ export default class QueryStore {
     }
 
     saveQuery = async (queryToSave: any) => {
+        this.setIsLoading(true)
         await axiosAgents.QueryActions.saveQuery(queryToSave)
             .then(() => {
                 toast.success("Query saved successfully")
@@ -89,13 +99,14 @@ export default class QueryStore {
 
         await this.setTableHidden(true)
         await this.setEntireResultHidden(true)
+        this.setIsLoading(false)
     }
 
-    loadSavedQuery = async () => {
+    loadAllSavedQueries = async () => {
         this.setIsLoading(true)
 
-        await axiosAgents.QueryActions.getAllSavedQuery()
-            .then((response: any) => {
+        await axiosAgents.QueryActions.getAllSavedQueries()
+            .then((response) => {
                 this.setQueryRecommendations(response?.result)
             })
             .catch((error) => {
@@ -105,7 +116,20 @@ export default class QueryStore {
         this.setIsLoading(false)
     }
 
+    updateSavedQuery = async (queryId: string, newUpdatedQuery: SavedQuery) => {
+        this.setIsLoading(true)
+        await axiosAgents.QueryActions.updateSavedQuery(queryId, newUpdatedQuery)
+            .then(() => {
+                toast.success("Update query successfully")
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.errorMessages[0])
+            })
+        this.setIsLoading(false)
+    }
+
     deleteSavedQuery = async (queryId: string) => {
+        this.setIsLoading(true)
         await axiosAgents.QueryActions.deleteSavedQuery(queryId)
             .then(() => {
                 toast.success("Deleted successfully")
@@ -113,5 +137,18 @@ export default class QueryStore {
             .catch((error) => {
                 toast.error(error?.response?.data?.errorMessages[0])
             })
+        this.setIsLoading(false)
+    }
+
+    loadOneSavedQuery = async (queryId: string) => {
+        this.setIsLoading(true)
+        await axiosAgents.QueryActions.getOneSavedQuery(queryId)
+            .then((response) => {
+                this.setSingleSavedQuery(response?.result)
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.errorMessages[0])
+            })
+        this.setIsLoading(false)
     }
 }

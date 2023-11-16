@@ -1,19 +1,50 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import '../Stylesheets/Update_Modal.css'
+import { observer } from "mobx-react-lite"
+import { useStore } from "../Stores/store"
 
 interface Props {
-    queryId: string
+    queryId: string,
+    updateMode: boolean,
+    setUpdateMode: any
 }
 
-const UpdateModal = ({ queryId }: Props) => {
+const UpdateModal = ({ queryId, updateMode, setUpdateMode }: Props) => {
     const [titleUpdateValues, setTitleUpdateValues] = useState<string>('')
-    const [titleQueryUpdateValues, setQueryUpdateValues] = useState<string>('')
+    const [queryUpdateValues, setQueryUpdateValues] = useState<string>('')
+
+    const titleInput = useRef(null)
+    const queryInput = useRef(null)
+
+    const { queryStore } = useStore();
+    const { loadOneSavedQuery, singleSavedQuery, unloadSingleSavedQuery, updateSavedQuery } = queryStore;
 
     useEffect(() => {
-        if (queryId != '') {
-            console.log(queryId)
+        if (updateMode === true) {
+            loadOneSavedQuery(queryId)
         }
-    }, [queryId])
+        else if (updateMode === false) {
+            unloadSingleSavedQuery()
+        }
+    }, [updateMode])
+
+    useEffect(() => {
+        setTitleUpdateValues(singleSavedQuery?.title!);
+        setQueryUpdateValues(singleSavedQuery?.query!);
+
+        (titleInput.current as any).value = singleSavedQuery?.title!;
+        (queryInput.current as any).value = singleSavedQuery?.query!;
+
+    }, [singleSavedQuery != null])
+
+    const updateQuery = async () => {
+        await updateSavedQuery(queryId, {
+            title: titleUpdateValues,
+            query: queryUpdateValues
+        })
+
+        setUpdateMode(false)
+    }
 
     return (
         <>
@@ -21,27 +52,33 @@ const UpdateModal = ({ queryId }: Props) => {
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
-                        <div className="modal-header">
-                            <h4 className="modal-title text-center">Update Query</h4>
+                        <div className="modal-header text-center">
+                            <h4 className="modal-title">Update Query</h4>
                         </div>
 
                         <div className="modal-body">
                             <div className="container">
                                 <div className="row">
                                     <input type="text" className="form-control" placeholder="Title..." id="queryTitle"
-                                        onChange={(event) => setTitleUpdateValues(event.target.value)} />
+                                        onChange={(event) => setTitleUpdateValues(event.target.value)} ref={titleInput} />
                                 </div>
 
                                 <div className="row mt-3">
                                     <input type="text" className="form-control" placeholder="Query..." id="queryInput"
-                                        onChange={(event) => setQueryUpdateValues(event.target.value)} />
+                                        onChange={(event) => setQueryUpdateValues(event.target.value)} ref={queryInput} />
                                 </div>
                             </div>
                         </div>
 
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"
+                                onClick={() => setUpdateMode(false)}>
+                                Close
+                            </button>
+
+                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => updateQuery()}>
+                                Save changes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -50,4 +87,4 @@ const UpdateModal = ({ queryId }: Props) => {
     )
 }
 
-export default UpdateModal
+export default observer(UpdateModal)

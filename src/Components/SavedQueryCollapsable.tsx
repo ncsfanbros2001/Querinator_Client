@@ -5,6 +5,7 @@ import Spinner from "../Helpers/Spinner"
 import { useStore } from "../Stores/store"
 import UpdateModal from "./UpdateModal"
 import { useState } from "react"
+import { observer } from "mobx-react-lite"
 
 interface Props {
     savedQueries: SavedQuery[] | undefined
@@ -18,6 +19,7 @@ const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Prop
     const { deleteSavedQuery } = queryStore
 
     const [updateId, setUpdateId] = useState<string>("")
+    const [updateMode, setUpdateMode] = useState<boolean>(false)
 
     const executeQuery = (query: string) => {
         navigate(`/query/${query}`)
@@ -52,11 +54,14 @@ const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Prop
                                         <button className='btn btn-success function-button' onClick={() => executeQuery(item.query)}>
                                             <i className="bi bi-lightning"></i>
                                         </button>
-                                        <button className='btn btn-warning function-button' onClick={() => { setUpdateId(item.id) }}
+                                        <button className='btn btn-warning function-button' onClick={() => {
+                                            setUpdateId(item.id!)
+                                            setUpdateMode(true)
+                                        }}
                                             data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                                             <i className="bi bi-pencil-square"></i>
                                         </button>
-                                        <button className='btn btn-danger function-button' onClick={() => deleteSavedQuery(item.id)}>
+                                        <button className='btn btn-danger function-button' onClick={() => deleteSavedQuery(item.id!)}>
                                             <i className="bi bi-trash3"></i>
                                         </button>
                                     </div>
@@ -70,10 +75,10 @@ const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Prop
                     </div>
                 </div>
 
-                <UpdateModal queryId={updateId} />
+                <UpdateModal queryId={updateId} updateMode={updateMode} setUpdateMode={setUpdateMode} />
             </div>
         </>
     )
 }
 
-export default SavedQueryCollapsable
+export default observer(SavedQueryCollapsable)

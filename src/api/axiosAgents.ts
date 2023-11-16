@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { SavedQuery } from "../models/SavedQuery";
 
 axios.defaults.baseURL = 'https://localhost:44360/api'
 axios.interceptors.response.use(async response => {
@@ -21,6 +22,9 @@ const requests = {
     post: (url: string, body: {}) => {
         return axios.post(url, body).then(responseBody);
     },
+    put: (url: string, body: {}) => {
+        return axios.put(url, body).then(responseBody);
+    },
     delete: (url: string) => {
         return axios.delete(url).then(responseBody)
     }
@@ -33,27 +37,19 @@ const QueryActions = {
     saveQuery: (queryToSave: any) => {
         return requests.post(`/Query`, queryToSave);
     },
-    getAllSavedQuery: () => {
+    getAllSavedQueries: () => {
         return requests.get(`/Query`);
     },
-    deleteSavedQuery: (queryId: string) => {
-        return requests.delete(`/Query/${queryId}`);
+    deleteSavedQuery: (queryToDeleteId: string) => {
+        return requests.delete(`/Query/${queryToDeleteId}`);
+    },
+    updateSavedQuery: (queryToUpdateId: string, updateInfo: SavedQuery) => {
+        return requests.put(`/Query/${queryToUpdateId}`, updateInfo);
+    },
+    getOneSavedQuery: (queryId: string) => {
+        return requests.get(`/Query/${queryId}`);
     }
 }
-
-// const responseBody = (response: AxiosResponse) => response.data
-
-// const requests = {
-//     get: (url: string) => axios.get(url).then(responseBody),
-//     post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
-
-// }
-
-// const QueryActions = {
-//     queryResults: (queryString: string) => requests.get(`/Query/${queryString}`),
-//     saveQuery: (queryToSave: any) => requests.post(`/Query`, queryToSave),
-//     getAllSavedQuery: () => requests.get(`/Query`)
-// }
 
 const axiosAgents = { QueryActions }
 

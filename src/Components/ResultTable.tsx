@@ -2,6 +2,7 @@ import { CSVLink } from 'react-csv'
 import { useStore } from '../Stores/store'
 import Spinner from '../Helpers/Spinner'
 import { observer } from 'mobx-react-lite'
+import { toast } from 'react-toastify'
 
 const ResultTable = () => {
     const { queryStore } = useStore()
@@ -80,7 +81,8 @@ const ResultTable = () => {
                             )}
                         </div>
 
-                        <button className='btn btn-primary mt-3' hidden={!(queryResult?.result.length > 0)}>
+                        <button className='btn btn-primary mt-3' hidden={!(queryResult?.result.length > 0)}
+                            onClick={() => toast.info("Downloading...")}>
                             <CSVLink {...csvReport} style={{ color: "white", textDecoration: "none" }}>
                                 <i className="bi bi-file-earmark-arrow-down"></i>  Download .csv
                             </CSVLink>
