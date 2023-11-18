@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { SavedQuery } from "../models/SavedQuery";
+import { LoginCredentials } from "../models/LoginCredentials";
+import { RegisterInfo } from "../models/RegisterInfo"
 
 axios.defaults.baseURL = 'https://localhost:44360/api'
 axios.interceptors.response.use(async response => {
@@ -34,7 +36,7 @@ const QueryActions = {
     queryResults: (queryString: string) => {
         return requests.get(`/Query/executeQuery/${queryString}`);
     },
-    saveQuery: (queryToSave: any) => {
+    saveQuery: (queryToSave: SavedQuery) => {
         return requests.post(`/Query`, queryToSave);
     },
     getAllSavedQueries: () => {
@@ -51,6 +53,15 @@ const QueryActions = {
     }
 }
 
-const axiosAgents = { QueryActions }
+const AccountActions = {
+    login: (credentials: LoginCredentials) => {
+        return requests.post(`/Account/login`, credentials)
+    },
+    register: (registerInfo: RegisterInfo) => {
+        return requests.post(`/Account/register`, registerInfo)
+    }
+}
+
+const axiosAgents = { QueryActions, AccountActions }
 
 export default axiosAgents

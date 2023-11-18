@@ -11,9 +11,7 @@ const App = () => {
         <div>
             <Navbar />
             <ToastContainer position="bottom-right" theme="colored" />
-            {location.pathname === "/" ? (<MainMenu />) : (
-                <Outlet />
-            )}
+            <Outlet />
         </div>
     )
 }
