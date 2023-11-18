@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { SavedQuery } from "../models/SavedQuery";
 import { LoginCredentials } from "../models/LoginCredentials";
-import { RegisterInfo } from "../models/RegisterInfo"
+import { RegisterInfo } from "../models/registerInfo"
 
 axios.defaults.baseURL = 'https://localhost:44360/api'
 axios.interceptors.response.use(async response => {

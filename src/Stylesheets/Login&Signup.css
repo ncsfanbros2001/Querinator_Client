@@ -25,10 +25,9 @@
     width: 600px;
 }
 
-#emailLoginField:focus,
-#passwordLoginField:focus {
-    outline: none;
-    box-shadow: none;
+input:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 #submitButton:focus,
@@ -37,7 +36,8 @@
     box-shadow: none;
 }
 
-#passwordLoginField {
+#passwordLoginField,
+#confirmPasswordLoginField {
     margin-right: 5px;
 }
 

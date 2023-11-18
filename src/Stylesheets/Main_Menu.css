@@ -24,4 +24,31 @@
 .btnControl {
     width: 80%;
     height: 50px;
+    margin: 5px;
+}
+
+.greenBG {
+    background-color: #32CD32 !important;
+    color: whitesmoke !important;
+}
+
+.blueBG {
+    background-color: #1E90FF !important;
+    color: whitesmoke !important;
+}
+
+.greenBG:hover {
+    background-color: #3CB371 !important;
+    border: 2px solid white !important;
+    transition-duration: 0.3s;
+}
+
+.blueBG:hover {
+    background-color: #4169E1 !important;
+    border: 2px solid white !important;
+    transition-duration: 0.3s;
+}
+
+.welcomeMessage {
+    font-size: 36px;
 }
