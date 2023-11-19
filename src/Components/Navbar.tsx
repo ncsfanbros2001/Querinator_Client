@@ -1,13 +1,12 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { StaticValues } from '../utilities/Statics';
+import { useStore } from '../Stores/store';
 
 const Navbar = () => {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem(StaticValues.userToken)
-        navigate('/')
-    }
+    const { accountStore } = useStore();
+    const { logout } = accountStore
 
     return (
         <>
@@ -38,7 +37,7 @@ const Navbar = () => {
                     </div>
                 ) : (
                     <div>
-                        <button className='btn btn-success mx-1' onClick={() => handleLogout()}>Log Out</button>
+                        <button className='btn btn-success mx-1' onClick={() => logout()}>Log Out</button>
                     </div>
                 )}
             </nav>

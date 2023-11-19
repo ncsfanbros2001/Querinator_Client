@@ -1,5 +1,6 @@
 export interface LoggedInUser {
+    id: string,
     displayName: string,
-    token: string,
+    email: string,
     username: string
 }

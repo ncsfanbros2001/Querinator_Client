@@ -10,15 +10,11 @@ const MainMenu = () => {
     const { accountStore } = useStore()
     const { loggedInUser } = accountStore
 
-    useEffect(() => {
-        console.log(loggedInUser)
-    }, [])
-
     return (
         <div id='containr'>
             <div id='content'>
                 <h1 className='text-light'>QUERINATOR</h1>
-                {loggedInUser && (<p className='text-light welcomeMessage'>Hello There {loggedInUser.displayName}</p>)}
+                {loggedInUser && (<p className='text-light welcomeMessage'>Hello There, {loggedInUser.displayName} !</p>)}
 
                 {localStorage.getItem(StaticValues.userToken) ? (
                     <div className="d-flex flex-column align-items-center mt-2 w-100">

@@ -124,8 +124,8 @@ const Signup = () => {
 
                         <div className="row">
                             <div className="mt-4 form-group">
-                                <button className='btn btn-success form-control' id="submitButton" type='submit'>
-                                    Sign Up
+                                <button className='btn btn-success form-control' id="submitButton" type='submit' disabled={isLoading}>
+                                    {!isLoading ? 'Sign Up' : <SpinnerButton />}
                                 </button>
                             </div>
                         </div>

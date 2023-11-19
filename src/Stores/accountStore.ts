@@ -1,4 +1,4 @@
-import { autorun, makeAutoObservable, reaction } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import { LoginCredentials } from "../models/LoginCredentials";
 import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
@@ -6,6 +6,7 @@ import { LoggedInUser } from "../models/LoggedInUser";
 import { StaticValues } from "../utilities/Statics";
 import { RegisterInfo } from "../models/registerInfo";
 import { jwtDecode } from "jwt-decode";
+import { LoginResult } from "../models/LoginResult";
 
 export default class AccountStore {
     isLoading: boolean = false;
@@ -26,17 +27,20 @@ export default class AccountStore {
         this.isLoading = value;
     }
 
+    setLoggedInUser = (value: LoggedInUser | null) => {
+        this.loggedInUser = value;
+    }
+
     login = async (loginCredentials: LoginCredentials) => {
         try {
             this.setIsLoading(true)
 
             localStorage.removeItem(StaticValues.userToken)
-            const loggedInUser: LoggedInUser = await axiosAgents.AccountActions.login(loginCredentials)
-            localStorage.setItem(StaticValues.userToken, loggedInUser.token)
-
-            this.setIsLoading(false)
+            const loginResult: LoginResult = await axiosAgents.AccountActions.login(loginCredentials)
+            localStorage.setItem(StaticValues.userToken, loginResult.token)
 
             toast.success("Login Successfully")
+            this.setIsLoading(false)
             window.location.replace("http://localhost:3000")
         }
         catch {
@@ -45,14 +49,30 @@ export default class AccountStore {
         }
     }
 
+    logout = async () => {
+        localStorage.removeItem(StaticValues.userToken)
+        this.setLoggedInUser(null)
+
+        window.location.replace("http://localhost:3000")
+    }
+
     register = async (registerInfo: RegisterInfo) => {
         try {
             this.setIsLoading(true)
 
-            //const loggedInUser: LoggedInUser = await axiosAgents.AccountActions.register(registerInfo)
-            // console.log(registerInfo)
+            await axiosAgents.AccountActions.register(registerInfo)
 
-            this.setIsLoading(true)
+            const loginResult: LoginResult = await axiosAgents.AccountActions.login({
+                email: registerInfo.email,
+                password: registerInfo.password
+            })
+
+            localStorage.setItem(StaticValues.userToken, loginResult.token)
+
+            toast.success("Register Successfully")
+            this.setIsLoading(false)
+
+            window.location.replace("http://localhost:3000")
         }
         catch (error) {
             console.log(error)
