@@ -16,7 +16,7 @@ interface Props {
 const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Props) => {
     const navigate = useNavigate()
     const { queryStore } = useStore()
-    const { deleteSavedQuery, executeQuery } = queryStore
+    const { deleteSavedQuery } = queryStore
 
     const [updateId, setUpdateId] = useState<string>("")
     const [updateMode, setUpdateMode] = useState<boolean>(false)

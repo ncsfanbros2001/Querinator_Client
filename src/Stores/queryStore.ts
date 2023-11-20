@@ -102,10 +102,10 @@ export default class QueryStore {
         this.setIsLoading(false)
     }
 
-    loadAllSavedQueries = async () => {
+    loadSavedQueries = async (userId: string) => {
         this.setIsLoading(true)
 
-        await axiosAgents.QueryActions.getAllSavedQueries()
+        await axiosAgents.QueryActions.getSavedQueries(userId)
             .then((response) => {
                 this.setQueryRecommendations(response?.result)
             })

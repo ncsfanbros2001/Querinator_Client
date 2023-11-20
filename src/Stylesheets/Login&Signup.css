@@ -1,10 +1,18 @@
-#containr {
+#loginContainr {
     background-image: linear-gradient(135deg,
             rgba(24, 42, 115, 0.795) 0%,
             rgb(0, 169, 92) 69%,
             rgb(0, 211, 115) 89%) !important;
     width: 100%;
-    height: 93vh;
+    height: 92vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#registerContainr {
+    width: 100%;
+    height: 92vh;
     display: flex;
     justify-content: center;
     align-items: center;

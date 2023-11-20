@@ -6,7 +6,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const { accountStore } = useStore();
-    const { logout } = accountStore
+    const { logout, loggedInUser } = accountStore
 
     return (
         <>
@@ -31,14 +31,30 @@ const Navbar = () => {
 
 
                 {!localStorage.getItem(StaticValues.userToken) ? (
-                    <div>
+                    <>
                         <button className='btn btn-success mx-1' onClick={() => navigate('/login')}>Log In</button>
-                        <button className='btn btn-primary mx-1' onClick={() => navigate('/signup')}>Sign Up</button>
-                    </div>
+                    </>
                 ) : (
-                    <div>
-                        <button className='btn btn-success mx-1' onClick={() => logout()}>Log Out</button>
-                    </div>
+                    <>
+                        <div className="dropdown">
+                            <button className="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <b className='mx-1'>{loggedInUser?.displayName}</b>
+                            </button>
+
+                            <ul className="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <button className="dropdown-item" type="button" onClick={() => navigate('/signup')}>
+                                        <i className="bi bi-person-add"></i>  <b>Add Account</b>
+                                    </button>
+                                    <li><hr className="dropdown-divider" /></li>
+                                    <button className="dropdown-item" type="button" onClick={() => logout()}>
+                                        <i className="bi bi-door-open"></i>  <b>Log Out</b>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </>
                 )}
             </nav>
         </>

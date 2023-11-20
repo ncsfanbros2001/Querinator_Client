@@ -23,12 +23,11 @@ const Login = () => {
 
     const handleSubmit = (event: any) => {
         event.preventDefault()
-
         login(credentials)
     }
 
     return (
-        <div id='containr'>
+        <div id='loginContainr'>
             <div id='content'>
                 <form className='formContainerLogin' onSubmit={handleSubmit}>
                     <h1 className='text-center text-success mb-4'>LOGIN</h1>

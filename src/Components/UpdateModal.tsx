@@ -16,8 +16,9 @@ const UpdateModal = ({ queryId, updateMode, setUpdateMode }: Props) => {
     const titleInput = useRef(null)
     const queryInput = useRef(null)
 
-    const { queryStore } = useStore();
+    const { queryStore, accountStore } = useStore();
     const { loadOneSavedQuery, singleSavedQuery, unloadSingleSavedQuery, updateSavedQuery } = queryStore;
+    const { loggedInUser } = accountStore
 
     useEffect(() => {
         if (updateMode === true) {
@@ -40,7 +41,8 @@ const UpdateModal = ({ queryId, updateMode, setUpdateMode }: Props) => {
     const updateQuery = async () => {
         await updateSavedQuery(queryId, {
             title: titleUpdateValues,
-            query: queryUpdateValues
+            query: queryUpdateValues,
+            userId: loggedInUser?.id!
         })
 
         setUpdateMode(false)

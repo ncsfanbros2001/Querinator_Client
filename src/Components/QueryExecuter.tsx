@@ -9,8 +9,9 @@ const QueryExecuter = () => {
     const [queryTitle, setQueryTitle] = useState<string>("");
     const [saveMode, setSaveMode] = useState<boolean>(false);
 
-    const { queryStore } = useStore()
+    const { queryStore, accountStore } = useStore()
     const { executeQuery, saveQuery, isLoading } = queryStore
+    const { loggedInUser } = accountStore
 
     const navigate = useNavigate()
     const param = useParams()
@@ -74,7 +75,7 @@ const QueryExecuter = () => {
                             onChange={(e) => setQueryTitle(e.target.value)} />
 
                         <button className='btn btn-primary mx-2 w-25' disabled={queryTitle === ''}
-                            onClick={() => saveQuery({ title: queryTitle, query: queryString })}>
+                            onClick={() => saveQuery({ title: queryTitle, query: queryString, userId: loggedInUser?.id })}>
                             Save
                         </button>
                     </div>

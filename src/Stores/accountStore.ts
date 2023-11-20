@@ -39,9 +39,11 @@ export default class AccountStore {
             const loginResult: LoginResult = await axiosAgents.AccountActions.login(loginCredentials)
             localStorage.setItem(StaticValues.userToken, loginResult.token)
 
-            toast.success("Login Successfully")
+
             this.setIsLoading(false)
             window.location.replace("http://localhost:3000")
+
+            toast.success("Login Successfully")
         }
         catch {
             toast.error("Incorrect Username or Password")
@@ -69,10 +71,10 @@ export default class AccountStore {
 
             localStorage.setItem(StaticValues.userToken, loginResult.token)
 
-            toast.success("Register Successfully")
             this.setIsLoading(false)
-
             window.location.replace("http://localhost:3000")
+
+            await toast.success("Register Successfully")
         }
         catch (error) {
             console.log(error)

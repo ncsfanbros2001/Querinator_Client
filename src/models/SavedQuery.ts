@@ -1,5 +1,6 @@
 export interface SavedQuery {
     id?: string,
     title: string,
-    query: string
+    query: string,
+    userId: string
 }

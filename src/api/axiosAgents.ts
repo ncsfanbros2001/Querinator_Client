@@ -2,15 +2,25 @@ import axios, { AxiosResponse } from "axios";
 import { SavedQuery } from "../models/SavedQuery";
 import { LoginCredentials } from "../models/LoginCredentials";
 import { RegisterInfo } from "../models/registerInfo"
+import { store } from '../Stores/store'
+import { error } from "console";
 
 axios.defaults.baseURL = 'https://localhost:44360/api'
+
+axios.interceptors.request.use((config) => {
+    const token = store.accountStore.userToken
+
+    if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+
+    return config
+})
+
 axios.interceptors.response.use(async response => {
-    try {
-        return response
-    }
-    catch (error) {
-        return await Promise.reject(error)
-    }
+    return response;
+}, (error: AxiosResponse) => {
+    return Promise.reject(error)
 })
 
 const responseBody = (response: AxiosResponse) => {
@@ -39,8 +49,8 @@ const QueryActions = {
     saveQuery: (queryToSave: SavedQuery) => {
         return requests.post(`/Query`, queryToSave);
     },
-    getAllSavedQueries: () => {
-        return requests.get(`/Query`);
+    getSavedQueries: (userId: string) => {
+        return requests.get(`/Query/getByUserId/${userId}`);
     },
     deleteSavedQuery: (queryToDeleteId: string) => {
         return requests.delete(`/Query/${queryToDeleteId}`);

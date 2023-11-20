@@ -3,7 +3,6 @@ import '../Stylesheets/Main_Menu.css'
 import { StaticValues } from '../utilities/Statics'
 import { useStore } from '../Stores/store'
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
 
 const MainMenu = () => {
     const navigate = useNavigate()
@@ -29,9 +28,6 @@ const MainMenu = () => {
                     <div className="d-flex justify-content-center mt-2 w-100 p-2">
                         <button onClick={() => navigate('/login')} className='btnControl btn greenBG'>
                             Log In
-                        </button>
-                        <button onClick={() => navigate('/signup')} className='btnControl btn blueBG'>
-                            Sign Up
                         </button>
                     </div>
                 )}
