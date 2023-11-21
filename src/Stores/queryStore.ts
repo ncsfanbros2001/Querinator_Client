@@ -94,7 +94,9 @@ export default class QueryStore {
                 toast.success("Query saved successfully")
             })
             .catch(error => {
-                toast.error(error?.response?.data?.errorMessages[0])
+                if (error?.response?.data) {
+                    toast.error(error?.response?.data?.errorMessages[0])
+                }
             })
 
         await this.setTableHidden(true)
@@ -110,7 +112,9 @@ export default class QueryStore {
                 this.setQueryRecommendations(response?.result)
             })
             .catch((error) => {
-                toast.error(error?.response?.data?.errorMessages[0])
+                if (error?.response?.data) {
+                    toast.error(error?.response?.data?.errorMessages[0])
+                }
             })
 
         this.setIsLoading(false)
@@ -123,7 +127,9 @@ export default class QueryStore {
                 toast.success("Update query successfully")
             })
             .catch((error) => {
-                toast.error(error?.response?.data?.errorMessages[0])
+                if (error?.response?.data) {
+                    toast.error(error?.response?.data?.errorMessages[0])
+                }
             })
         this.setIsLoading(false)
     }
@@ -135,7 +141,9 @@ export default class QueryStore {
                 toast.success("Deleted successfully")
             })
             .catch((error) => {
-                toast.error(error?.response?.data?.errorMessages[0])
+                if (error?.response?.data) {
+                    toast.error(error?.response?.data?.errorMessages[0])
+                }
             })
         this.setIsLoading(false)
     }
@@ -146,7 +154,9 @@ export default class QueryStore {
                 this.setSingleSavedQuery(response?.result)
             })
             .catch((error) => {
-                toast.error(error?.response?.data?.errorMessages[0])
+                if (error?.response?.data) {
+                    toast.error(error?.response?.data?.errorMessages[0])
+                }
             })
     }
 }

@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { StaticValues } from '../utilities/Statics';
+import { StaticValues, UserRoles } from '../utilities/Statics';
 import { useStore } from '../Stores/store';
 
 const Navbar = () => {
@@ -44,10 +44,15 @@ const Navbar = () => {
 
                             <ul className="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <button className="dropdown-item" type="button" onClick={() => navigate('/signup')}>
-                                        <i className="bi bi-person-add"></i>  <b>Add Account</b>
-                                    </button>
-                                    <li><hr className="dropdown-divider" /></li>
+                                    {loggedInUser?.role === UserRoles.admin && (
+                                        <>
+                                            <button className="dropdown-item" type="button" onClick={() => navigate('/signup')}>
+                                                <i className="bi bi-person-add"></i>  <b>Add Account</b>
+                                            </button>
+                                            <li><hr className="dropdown-divider" /></li>
+                                        </>
+                                    )}
+
                                     <button className="dropdown-item" type="button" onClick={() => logout()}>
                                         <i className="bi bi-door-open"></i>  <b>Log Out</b>
                                     </button>

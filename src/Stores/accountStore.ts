@@ -7,6 +7,7 @@ import { StaticValues } from "../utilities/Statics";
 import { RegisterInfo } from "../models/registerInfo";
 import { jwtDecode } from "jwt-decode";
 import { LoginResult } from "../models/LoginResult";
+import { router } from "../Routes";
 
 export default class AccountStore {
     isLoading: boolean = false;
@@ -55,7 +56,7 @@ export default class AccountStore {
         localStorage.removeItem(StaticValues.userToken)
         this.setLoggedInUser(null)
 
-        window.location.replace("http://localhost:3000")
+        router.navigate('/')
     }
 
     register = async (registerInfo: RegisterInfo) => {

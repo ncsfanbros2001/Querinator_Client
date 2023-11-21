@@ -1,8 +1,8 @@
-#containr {
+#containrBlock {
     background-image: linear-gradient(135deg,
-            rgba(24, 42, 115, 0.795) 0%,
-            rgb(0, 169, 92) 69%,
-            rgb(99, 215, 163) 89%) !important;
+            rgb(220, 20, 60) 38%,
+            rgb(255, 0, 0) 69%,
+            rgb(250, 128, 114) 89%) !important;
     width: 100%;
     height: 92vh;
     display: flex;
@@ -10,7 +10,7 @@
     align-items: center;
 }
 
-#content {
+#unauthorizedContent {
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -33,24 +33,13 @@
     color: whitesmoke !important;
 }
 
-.blueBG {
-    background-color: #1E90FF !important;
-    color: whitesmoke !important;
-}
-
 .greenBG:hover {
     background-color: #3CB371 !important;
     border: 2px solid white !important;
     transition-duration: 0.3s;
 }
 
-.blueBG:hover {
-    background-color: #4169E1 !important;
-    border: 2px solid white !important;
-    transition-duration: 0.3s;
-}
-
-.welcomeMessage {
+.warningMessage {
     font-size: 36px;
     color: whitesmoke;
 }

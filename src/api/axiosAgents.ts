@@ -1,9 +1,9 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { SavedQuery } from "../models/SavedQuery";
 import { LoginCredentials } from "../models/LoginCredentials";
 import { RegisterInfo } from "../models/registerInfo"
 import { store } from '../Stores/store'
-import { error } from "console";
+import { router } from "../Routes";
 
 axios.defaults.baseURL = 'https://localhost:44360/api'
 
@@ -19,7 +19,12 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(async response => {
     return response;
-}, (error: AxiosResponse) => {
+}, (error: AxiosError) => {
+    const { status } = error.response as AxiosResponse
+    switch (status) {
+        case 401 || 403:
+            router.navigate('/unauthorized')
+    }
     return Promise.reject(error)
 })
 

@@ -9,3 +9,7 @@
     border-radius: 5px;
     padding: 8px;
 }
+
+.text-success {
+    user-select: none;
+}

@@ -72,7 +72,7 @@ const QueryExecuter = () => {
                 <div className="collapse w-50" id="saveQueryAccordion">
                     <div className="d-flex justify-content-center">
                         <input type='text' className='form-control w-75' id="queryTitle" placeholder='Your query title...'
-                            onChange={(e) => setQueryTitle(e.target.value)} />
+                            onChange={(e) => setQueryTitle(e.target.value)} disabled={isLoading} />
 
                         <button className='btn btn-primary mx-2 w-25' disabled={queryTitle === ''}
                             onClick={() => saveQuery({ title: queryTitle, query: queryString, userId: loggedInUser?.id })}>
