@@ -82,5 +82,9 @@ export default class AccountStore {
             this.setIsLoading(false)
         }
     }
+
+    triggerUnauthorized = () => {
+        axiosAgents.AccountActions.unauthorized();
+    }
 }
 

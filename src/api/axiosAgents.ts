@@ -3,7 +3,6 @@ import { SavedQuery } from "../models/SavedQuery";
 import { LoginCredentials } from "../models/LoginCredentials";
 import { RegisterInfo } from "../models/registerInfo"
 import { store } from '../Stores/store'
-import { router } from "../Routes";
 
 axios.defaults.baseURL = 'https://localhost:44360/api'
 
@@ -23,7 +22,7 @@ axios.interceptors.response.use(async response => {
     const { status } = error.response as AxiosResponse
     switch (status) {
         case 401 || 403:
-            router.navigate('/unauthorized')
+            window.location.replace("http://localhost:3000/unauthorized")
     }
     return Promise.reject(error)
 })
@@ -74,6 +73,9 @@ const AccountActions = {
     },
     register: (registerInfo: RegisterInfo) => {
         return requests.post(`/Account/register`, registerInfo)
+    },
+    unauthorized: () => {
+        return requests.get(`/Account/unauthorized`)
     }
 }
 

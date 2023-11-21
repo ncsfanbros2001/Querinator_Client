@@ -42,4 +42,5 @@
 .warningMessage {
     font-size: 36px;
     color: whitesmoke;
+    user-select: none;
 }
