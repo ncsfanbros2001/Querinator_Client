@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../Stylesheets/Login&Signup.css'
 import { useStore } from '../Stores/store';
 import { LoginCredentials } from '../models/LoginCredentials';
@@ -13,8 +13,10 @@ const Login = () => {
         password: ''
     });
 
+    const [disabled, setDisabled] = useState<boolean>(false)
+
     const { accountStore } = useStore();
-    const { login, isLoading } = accountStore;
+    const { login, isLoading, loggedInUser } = accountStore;
 
     const togglePassword = (event: React.FormEvent) => {
         event.preventDefault()
@@ -26,6 +28,12 @@ const Login = () => {
         login(credentials)
     }
 
+    useEffect(() => {
+        if (loggedInUser) {
+            setDisabled(true)
+        }
+    }, [])
+
     return (
         <div id='loginContainr'>
             <div id='content'>
@@ -36,7 +44,7 @@ const Login = () => {
                         <input
                             type="email"
                             className="form-control"
-                            disabled={isLoading}
+                            disabled={isLoading || disabled}
                             id="emailLoginField"
                             autoComplete='false'
                             placeholder="Email"
@@ -51,7 +59,7 @@ const Login = () => {
                         <div className="d-flex justify-content-center">
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                disabled={isLoading}
+                                disabled={isLoading || disabled}
                                 className="form-control"
                                 id="passwordLoginField"
                                 autoComplete='false'
@@ -61,14 +69,16 @@ const Login = () => {
                                     password: e.target.value
                                 }))} />
 
-                            <button className='btn btn-success' onClick={(event: React.FormEvent) => togglePassword(event)}>
+                            <button className='btn btn-success'
+                                onClick={(event: React.FormEvent) => togglePassword(event)} disabled={disabled}>
                                 <i className={showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
                             </button>
                         </div>
                     </div>
 
                     <div className="mt-4 form-group">
-                        <button className='btn btn-success form-control' id="submitButton" type='submit' disabled={isLoading}>
+                        <button className='btn btn-success form-control' id="submitButton" type='submit'
+                            disabled={isLoading || disabled}>
                             {!isLoading ? 'Log In' : <SpinnerButton />}
                         </button>
                     </div>

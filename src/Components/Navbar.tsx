@@ -49,7 +49,7 @@ const Navbar = () => {
                                             <button className="dropdown-item" type="button" onClick={() => navigate('/signup')}>
                                                 <i className="bi bi-person-add"></i>  <b>Add Account</b>
                                             </button>
-                                            <li><hr className="dropdown-divider" /></li>
+                                            <hr className="dropdown-divider" />
                                         </>
                                     )}
 

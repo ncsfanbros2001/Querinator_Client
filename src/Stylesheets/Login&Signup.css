@@ -56,3 +56,7 @@ input:focus {
     padding: 15px;
     width: 800px;
 }
+
+label {
+    user-select: none;
+}

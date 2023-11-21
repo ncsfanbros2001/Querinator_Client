@@ -65,20 +65,23 @@ export default class AccountStore {
 
             await axiosAgents.AccountActions.register(registerInfo)
 
-            const loginResult: LoginResult = await axiosAgents.AccountActions.login({
-                email: registerInfo.email,
-                password: registerInfo.password
-            })
-
-            localStorage.setItem(StaticValues.userToken, loginResult.token)
-
             this.setIsLoading(false)
-            window.location.replace("http://localhost:3000")
 
             await toast.success("Register Successfully")
         }
-        catch (error) {
-            console.log(error)
+        catch (error: any) {
+            if (error.response.data.errors) {
+                console.log(error.response.data.errors)
+            }
+
+            if (!error.response.data.errors && error.response.data) {
+                console.log(error.response.data)
+            }
+            else {
+                console.log(error.response.data)
+                console.log(error.response.data.errors)
+            }
+
             this.setIsLoading(false)
         }
     }

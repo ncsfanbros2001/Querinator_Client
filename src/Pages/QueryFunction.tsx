@@ -5,10 +5,10 @@ import { useStore } from '../Stores/store';
 
 const QueryFunction = () => {
     const { accountStore } = useStore();
-    const { triggerUnauthorized, loggedInUser } = accountStore
+    const { triggerUnauthorized, userToken } = accountStore
 
     useEffect(() => {
-        if (!loggedInUser) {
+        if (!userToken) {
             triggerUnauthorized()
         }
     }, [])

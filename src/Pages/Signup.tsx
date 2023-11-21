@@ -1,21 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../Stylesheets/Login&Signup.css'
 import { useStore } from '../Stores/store';
 import { observer } from 'mobx-react-lite';
 import SpinnerButton from '../Helpers/SpinnerButton';
 import { RegisterInfo } from '../models/registerInfo';
+import { UserRoles } from '../utilities/Statics';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const { accountStore } = useStore()
-    const { isLoading, register } = accountStore
+    const { isLoading, register, triggerUnauthorized, loggedInUser } = accountStore
 
-    const [registerInfo, setRegisterInfo] = useState<RegisterInfo>({
-        displayName: '',
-        username: '',
-        email: '',
-        password: ''
-    });
+    const [displayName, setDisplayName] = useState<string>('')
+    const [username, setUsername] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [confirmPassword, setConfirmPassword] = useState<string>('')
 
     const togglePassword = (event: React.FormEvent) => {
         event.preventDefault()
@@ -24,8 +24,20 @@ const Signup = () => {
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault()
-        register(registerInfo)
+        register({
+            displayName: displayName,
+            username: username,
+            email: email,
+            password: password,
+            confirmPassword
+        })
     }
+
+    useEffect(() => {
+        if (!loggedInUser || loggedInUser.role !== UserRoles.admin) {
+            triggerUnauthorized()
+        }
+    }, [])
 
     return (
         <div id='registerContainr'>
@@ -44,10 +56,7 @@ const Signup = () => {
                                     id="emailLoginField"
                                     autoComplete='false'
                                     placeholder="Email..."
-                                    onChange={(e) => setRegisterInfo(prev => ({
-                                        ...prev,
-                                        email: e.target.value
-                                    }))} />
+                                    onChange={(e) => setEmail(e.target.value)} />
                             </div>
                         </div>
 
@@ -61,10 +70,7 @@ const Signup = () => {
                                     id="displayNameLoginField"
                                     autoComplete='false'
                                     placeholder="Display Name..."
-                                    onChange={(e) => setRegisterInfo(prev => ({
-                                        ...prev,
-                                        displayName: e.target.value
-                                    }))} />
+                                    onChange={(e) => setDisplayName(e.target.value)} />
                             </div>
                         </div>
 
@@ -78,10 +84,7 @@ const Signup = () => {
                                     id="usernameLoginField"
                                     autoComplete='false'
                                     placeholder="Username..."
-                                    onChange={(e) => setRegisterInfo(prev => ({
-                                        ...prev,
-                                        username: e.target.value
-                                    }))} />
+                                    onChange={(e) => setUsername(e.target.value)} />
                             </div>
                         </div>
 
@@ -96,10 +99,7 @@ const Signup = () => {
                                         id="passwordLoginField"
                                         autoComplete='false'
                                         placeholder="Password..."
-                                        onChange={(e) => setRegisterInfo(prev => ({
-                                            ...prev,
-                                            password: e.target.value
-                                        }))} />
+                                        onChange={(e) => setPassword(e.target.value)} />
                                 </div>
                             </div>
 
@@ -113,7 +113,8 @@ const Signup = () => {
                                         className="form-control"
                                         id="confirmPasswordLoginField"
                                         autoComplete='false'
-                                        placeholder="Confirm Password..." />
+                                        placeholder="Confirm Password..."
+                                        onChange={(e) => setConfirmPassword(e.target.value)} />
 
                                     <button className='btn btn-success' onClick={(event: React.FormEvent) => togglePassword(event)}>
                                         <i className={showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>

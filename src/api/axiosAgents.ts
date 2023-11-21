@@ -20,10 +20,16 @@ axios.interceptors.response.use(async response => {
     return response;
 }, (error: AxiosError) => {
     const { status } = error.response as AxiosResponse
+
     switch (status) {
-        case 401 || 403:
+        case 401:
             window.location.replace("http://localhost:3000/unauthorized")
+            break
+        case 403:
+            window.location.replace("http://localhost:3000/unauthorized")
+            break
     }
+
     return Promise.reject(error)
 })
 
