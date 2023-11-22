@@ -13,6 +13,7 @@ export default class AccountStore {
     isLoading: boolean = false;
     userToken: string | null = localStorage.getItem(StaticValues.userToken)
     loggedInUser: LoggedInUser | null = null
+    errors: string[] = []
 
     constructor() {
         makeAutoObservable(this)
@@ -52,6 +53,10 @@ export default class AccountStore {
         }
     }
 
+    setErrors = (errors: string[]) => {
+        this.errors = errors
+    }
+
     logout = async () => {
         localStorage.removeItem(StaticValues.userToken)
         this.setLoggedInUser(null)
@@ -64,22 +69,26 @@ export default class AccountStore {
             this.setIsLoading(true)
 
             await axiosAgents.AccountActions.register(registerInfo)
+            this.setErrors([])
 
             this.setIsLoading(false)
 
             await toast.success("Register Successfully")
         }
         catch (error: any) {
+            let errorArrays: any = [];
+
             if (error.response.data.errors) {
-                console.log(error.response.data.errors)
+                const errorValues: any = Object.values(error.response.data.errors)
+                errorArrays = errorArrays.concat(...errorValues);
+
+                this.setErrors(errorArrays)
             }
 
             if (!error.response.data.errors && error.response.data) {
-                console.log(error.response.data)
-            }
-            else {
-                console.log(error.response.data)
-                console.log(error.response.data.errors)
+                errorArrays[0] = error.response.data
+
+                this.setErrors(errorArrays)
             }
 
             this.setIsLoading(false)

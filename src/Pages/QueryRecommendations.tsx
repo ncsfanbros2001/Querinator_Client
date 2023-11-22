@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import SavedQueryCollapsable from "../Components/SavedQueryCollapsable"
+import SavedQueryAccordion from "../Components/SavedQueryAccordion"
 import { useStore } from "../Stores/store"
 import { observer } from "mobx-react-lite"
 
@@ -19,7 +19,7 @@ const QueryRecommendations = () => {
                 <h1 className="my-5 text-center text-success">Query Recommendations</h1>
 
                 <div className="container">
-                    <SavedQueryCollapsable savedQueries={savedQueries} queryGroupName={"Saved Queries"} isLoading={isLoading} />
+                    <SavedQueryAccordion savedQueries={savedQueries} queryGroupName={"Saved Queries"} isLoading={isLoading} />
                 </div>
             </div>
         </>

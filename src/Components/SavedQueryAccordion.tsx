@@ -13,7 +13,7 @@ interface Props {
     isLoading: boolean
 }
 
-const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Props) => {
+const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props) => {
     const navigate = useNavigate()
     const { queryStore } = useStore()
     const { deleteSavedQuery } = queryStore
@@ -83,4 +83,4 @@ const SavedQueryCollapsable = ({ savedQueries, queryGroupName, isLoading }: Prop
     )
 }
 
-export default observer(SavedQueryCollapsable)
+export default observer(SavedQueryAccordion)

@@ -44,6 +44,7 @@ const Login = () => {
                         <input
                             type="email"
                             className="form-control"
+                            value={loggedInUser ? loggedInUser.email : ''}
                             disabled={isLoading || disabled}
                             id="emailLoginField"
                             autoComplete='false'

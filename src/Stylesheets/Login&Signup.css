@@ -60,3 +60,17 @@ input:focus {
 label {
     user-select: none;
 }
+
+.validationError {
+    color: red;
+}
+
+.passwordHint {
+    border: 2px solid black;
+    width: 70%;
+    border-radius: 10px;
+    text-align: center;
+    padding: 5px;
+    background-color: ghostwhite;
+    user-select: none;
+}
