@@ -47,7 +47,7 @@ const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props)
                             ? savedQueries.map((item: SavedQuery, key: number) => (
                                 <div className="accordion-body d-flex flex-row justify-content-between" key={key}>
                                     <div style={{ width: '80%' }} className="p-1">
-                                        <h5>{item.title}</h5>
+                                        <h5 className="queryTitle">{item.title}</h5>
                                     </div>
 
                                     <div className="d-flex justify-content-evenly" style={{ width: '15%' }}>
@@ -55,6 +55,7 @@ const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props)
                                             onClick={() => execute(item.query)}>
                                             <i className="bi bi-lightning"></i>
                                         </button>
+
                                         <button className='btn btn-warning function-button' disabled={isLoading} onClick={() => {
                                             setUpdateId(item.id!)
                                             setUpdateMode(true)
@@ -62,6 +63,7 @@ const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props)
                                             data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                                             <i className="bi bi-pencil-square"></i>
                                         </button>
+
                                         <button className='btn btn-danger function-button' disabled={isLoading}
                                             onClick={() => deleteSavedQuery(item.id!)}>
                                             <i className="bi bi-trash3"></i>

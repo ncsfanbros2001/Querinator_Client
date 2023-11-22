@@ -1,17 +1,21 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
 import { SavedQuery } from "../models/SavedQuery";
 import { QueryResult } from "../models/QueryResult";
+import { TableName } from "../models/TableName";
 
 export default class QueryStore {
     queryResult: QueryResult | undefined = undefined;
-    isLoading: boolean = false;
-    columnNames: string[] = [];
-    tableHidden: boolean = false;
     savedQueries: SavedQuery[] = [];
-    entireResultHidden: boolean = false;
+    columnNames: string[] = [];
     singleSavedQuery: SavedQuery | null = null;
+    tableNames: TableName[] = [];
+
+    isLoading: boolean = false;
+    tableHidden: boolean = false;
+    entireResultHidden: boolean = false;
+
 
     constructor() {
         makeAutoObservable(this)
@@ -158,5 +162,23 @@ export default class QueryStore {
                     toast.error(error?.response?.data?.errorMessages[0])
                 }
             })
+    }
+
+    loadAllTableName = async () => {
+        this.setIsLoading(true)
+
+        await axiosAgents.QueryActions.getAllTableName()
+            .then((response) => {
+                runInAction(() => {
+                    this.tableNames = response?.result
+                })
+            })
+            .catch((error) => {
+                if (error?.response?.data) {
+                    toast.error(error?.response?.data?.errorMessages[0])
+                }
+            })
+
+        this.setIsLoading(false)
     }
 }

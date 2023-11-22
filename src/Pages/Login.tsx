@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
 import '../Stylesheets/Login&Signup.css'
 import { useStore } from '../Stores/store';
-import { LoginCredentials } from '../models/LoginCredentials';
 import { observer } from 'mobx-react-lite';
 import SpinnerButton from '../Helpers/SpinnerButton';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const [credentials, setCredentials] = useState<LoginCredentials>({
-        email: '',
-        password: ''
-    });
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
     const [disabled, setDisabled] = useState<boolean>(false)
 
@@ -25,7 +22,10 @@ const Login = () => {
 
     const handleSubmit = (event: any) => {
         event.preventDefault()
-        login(credentials)
+        login({
+            email: email,
+            password: password
+        })
     }
 
     useEffect(() => {
@@ -42,17 +42,13 @@ const Login = () => {
                     <div className="mt-2 form-group">
                         <label htmlFor="emailLoginField" className="form-label">Email address</label>
                         <input
-                            type="email"
-                            className="form-control"
-                            value={loggedInUser ? loggedInUser.email : ''}
+                            type='text'
                             disabled={isLoading || disabled}
+                            className="form-control"
                             id="emailLoginField"
                             autoComplete='false'
-                            placeholder="Email"
-                            onChange={(e) => setCredentials(prev => ({
-                                ...prev,
-                                email: e.target.value
-                            }))} />
+                            placeholder="Password..."
+                            onChange={(e) => setEmail(e.target.value)} />
                     </div>
 
                     <div className="mt-3 form-group">
@@ -65,10 +61,7 @@ const Login = () => {
                                 id="passwordLoginField"
                                 autoComplete='false'
                                 placeholder="Password..."
-                                onChange={(e) => setCredentials(prev => ({
-                                    ...prev,
-                                    password: e.target.value
-                                }))} />
+                                onChange={(e) => setPassword(e.target.value)} />
 
                             <button className='btn btn-success'
                                 onClick={(event: React.FormEvent) => togglePassword(event)} disabled={disabled}>

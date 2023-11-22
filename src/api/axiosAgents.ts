@@ -70,6 +70,9 @@ const QueryActions = {
     },
     getOneSavedQuery: (queryId: string) => {
         return requests.get(`/Query/${queryId}`);
+    },
+    getAllTableName: () => {
+        return requests.get('/Query/tableName')
     }
 }
 

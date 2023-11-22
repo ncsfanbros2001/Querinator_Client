@@ -27,7 +27,7 @@ const ResultTable = () => {
                             }}>
                                 <h3>Query Status:
                                     <span className={queryResult?.isSuccess == true ? 'text-success' : 'text-danger'}>
-                                        {queryResult?.isSuccess == true ? (' Success') : (' Failed')}
+                                        {queryResult?.isSuccess === true ? (' Success') : (' Failed')}
                                     </span>
                                 </h3>
 
