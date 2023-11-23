@@ -13,10 +13,6 @@ const DatabaseConnection = () => {
     const { connectionStore } = useStore();
     const { isLoading, serverList } = connectionStore
 
-    useEffect(() => {
-        console.log(databaseName)
-    }, [databaseName])
-
     return (
         <div id='connectionContainr'>
             <div id='connectionContent'>

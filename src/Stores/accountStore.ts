@@ -46,8 +46,9 @@ export default class AccountStore {
 
                 window.location.replace("http://localhost:3000/")
             })
-            .catch(() => {
-                toast.error("Incorrect Username or Password")
+            .catch((error) => {
+                toast.error(error?.response?.data)
+
                 this.setIsLoading(false)
             })
 
