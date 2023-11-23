@@ -88,6 +88,12 @@ const AccountActions = {
     }
 }
 
-const axiosAgents = { QueryActions, AccountActions }
+const ConnectionActions = {
+    getDbConnection: () => {
+        return requests.get('/Connection')
+    }
+}
+
+const axiosAgents = { QueryActions, AccountActions, ConnectionActions }
 
 export default axiosAgents

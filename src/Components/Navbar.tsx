@@ -25,6 +25,9 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <NavLink to='/recommend' className="nav-link">Recommendations</NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink to='/databaseConnection' className="nav-link">Database Connection</NavLink>
+                            </li>
                         </ul>
                     )}
                 </div>

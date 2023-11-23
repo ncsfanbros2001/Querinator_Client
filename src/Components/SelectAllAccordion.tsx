@@ -49,7 +49,7 @@ const SelectAllAccordion = ({ tableNames, queryGroupName, isLoading }: Props) =>
                             </div>
                         )) : (
                             <div className="text-center p-2">
-                                <h3>You don't have any saved query yet</h3>
+                                <h3>Can't load queries</h3>
                             </div>
                         )}
 
