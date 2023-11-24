@@ -52,9 +52,19 @@ const Navbar = () => {
                                             <button className="dropdown-item" type="button" onClick={() => navigate('/signup')}>
                                                 <i className="bi bi-person-add"></i>  <b>Add Account</b>
                                             </button>
+
+                                            <button className="dropdown-item" type="button" onClick={() => navigate('/userManagement')}>
+                                                <i className="bi bi-people"></i> <b>Manage Users</b>
+                                            </button>
                                             <hr className="dropdown-divider" />
                                         </>
                                     )}
+
+                                    <button className="dropdown-item" type="button" onClick={() => navigate('/changePassword')}>
+                                        <i className="bi bi-c-circle"></i> <b>Change Password</b>
+                                    </button>
+
+                                    <hr className="dropdown-divider" />
 
                                     <button className="dropdown-item" type="button" onClick={() => logout()}>
                                         <i className="bi bi-door-open"></i>  <b>Log Out</b>

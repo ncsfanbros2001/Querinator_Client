@@ -22,10 +22,7 @@ axios.interceptors.response.use(async response => {
     const { status } = error.response as AxiosResponse
 
     switch (status) {
-        case 401:
-            window.location.replace("http://localhost:3000/unauthorized")
-            break
-        case 403:
+        case 401 || 403:
             window.location.replace("http://localhost:3000/unauthorized")
             break
     }
@@ -53,8 +50,8 @@ const requests = {
 }
 
 const QueryActions = {
-    queryResults: (queryString: string) => {
-        return requests.get(`/Query/executeQuery/${queryString}`);
+    queryResults: (queryString: string, userRole: string) => {
+        return requests.get(`/Query/executeQuery/${queryString}/${userRole}`);
     },
     saveQuery: (queryToSave: SavedQuery) => {
         return requests.post(`/Query`, queryToSave);
@@ -85,6 +82,12 @@ const AccountActions = {
     },
     unauthorized: () => {
         return requests.get(`/Account/unauthorized`)
+    },
+    lockAndUnlock: (userId: string) => {
+        return requests.get(`Account/lockUnlock/${userId}`)
+    },
+    getUsers: () => {
+        return requests.get(`Account/getUsers`)
     }
 }
 

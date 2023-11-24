@@ -7,6 +7,8 @@ import MainMenu from "./Pages/MainMenu";
 import Signup from "./Pages/Signup";
 import Unauthorized from "./Components/Unauthorized";
 import DatabaseConnection from "./Pages/DatabaseConnection";
+import UserManagement from "./Pages/UserManagement";
+import ChangePassword from "./Pages/ChangePassword";
 
 export const routes: RouteObject[] = [
     {
@@ -19,7 +21,9 @@ export const routes: RouteObject[] = [
             { path: '/login', element: <Login /> },
             { path: '/signup', element: <Signup /> },
             { path: '/unauthorized', element: <Unauthorized /> },
-            { path: '/databaseConnection', element: <DatabaseConnection /> }
+            { path: '/databaseConnection', element: <DatabaseConnection /> },
+            { path: '/userManagement', element: <UserManagement /> },
+            { path: '/changePassword', element: <ChangePassword /> }
         ]
     }
 ]

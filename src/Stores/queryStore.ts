@@ -66,10 +66,10 @@ export default class QueryStore {
         this.singleSavedQuery = null
     }
 
-    executeQuery = async (queryString: string) => {
+    executeQuery = async (queryString: string, userRole: string) => {
         this.setIsLoading(true)
 
-        await axiosAgents.QueryActions.queryResults(queryString)
+        await axiosAgents.QueryActions.queryResults(queryString, userRole)
             .then(response => {
                 this.setQueryResult(this.parseToJSON(response))
 

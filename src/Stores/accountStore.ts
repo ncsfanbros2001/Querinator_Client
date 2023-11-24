@@ -2,8 +2,8 @@ import { autorun, makeAutoObservable } from "mobx";
 import { LoginCredentials } from "../models/LoginCredentials";
 import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
-import { LoggedInUser } from "../models/LoggedInUser";
-import { StaticValues } from "../utilities/Statics";
+import { User } from "../models/User";
+import { StaticValues, UserRoles } from "../utilities/Statics";
 import { RegisterInfo } from "../models/registerInfo";
 import { jwtDecode } from "jwt-decode";
 import { LoginResult } from "../models/LoginResult";
@@ -12,8 +12,9 @@ import { router } from "../Routes";
 export default class AccountStore {
     isLoading: boolean = false;
     userToken: string | null = localStorage.getItem(StaticValues.userToken)
-    loggedInUser: LoggedInUser | null = null
+    loggedInUser: User | null = null
     errors: string[] = []
+    userList: User[] = []
 
     constructor() {
         makeAutoObservable(this)
@@ -22,6 +23,10 @@ export default class AccountStore {
             if (this.userToken) {
                 this.loggedInUser = jwtDecode(this.userToken)
             }
+
+            if (this.loggedInUser?.isLocked === true) {
+                this.logout()
+            }
         })
     }
 
@@ -29,8 +34,12 @@ export default class AccountStore {
         this.isLoading = value;
     }
 
-    setLoggedInUser = (value: LoggedInUser | null) => {
+    setLoggedInUser = (value: User | null) => {
         this.loggedInUser = value;
+    }
+
+    setUserList = (value: User[]) => {
+        this.userList = value;
     }
 
     login = async (loginCredentials: LoginCredentials) => {
@@ -91,6 +100,31 @@ export default class AccountStore {
 
                 this.setIsLoading(false)
             })
+    }
+
+    lockAndUnlock = async (userId: string) => {
+        await axiosAgents.AccountActions.lockAndUnlock(userId)
+            .then(() => {
+                this.getAllUsers()
+                toast.success("Success")
+            })
+            .catch(() => {
+                toast.error("Failed")
+            })
+    }
+
+    getAllUsers = async () => {
+        this.setIsLoading(true)
+
+        await axiosAgents.AccountActions.getUsers()
+            .then((response) => {
+                this.setUserList(response)
+            })
+            .catch(() => {
+                toast.error("Can't load users")
+            })
+
+        this.setIsLoading(false)
     }
 
     triggerUnauthorized = () => {

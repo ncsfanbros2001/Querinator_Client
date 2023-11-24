@@ -20,7 +20,7 @@ const QueryExecuter = () => {
 
     useEffect(() => {
         if (param.query != null) {
-            executeQuery(param.query);
+            executeQuery(param.query, loggedInUser?.role!);
             setQueryString(param.query);
             (queryInputField.current as any).value = param.query;
         }
@@ -44,7 +44,7 @@ const QueryExecuter = () => {
                     className='btn btn-success'
                     disabled={queryString === '' || isLoading}
                     style={{ height: 40 }}
-                    onClick={() => executeQuery(queryString)}>
+                    onClick={() => executeQuery(queryString, loggedInUser?.role!)}>
                     <i className="bi bi-lightning"></i> Execute
                 </button>
 
