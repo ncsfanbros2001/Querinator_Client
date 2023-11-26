@@ -8,7 +8,7 @@ import { UserRoles } from '../utilities/Statics';
 const Signup = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const { accountStore } = useStore()
-    const { isLoading, register, triggerUnauthorized, loggedInUser, errors } = accountStore
+    const { isLoading, register, triggerUnauthorized, loggedInUser, errors, setErrors } = accountStore
 
     const [displayName, setDisplayName] = useState<string>('')
     const [username, setUsername] = useState<string>('')
@@ -33,6 +33,7 @@ const Signup = () => {
     }
 
     useEffect(() => {
+        setErrors([])
         if (!loggedInUser || loggedInUser.role !== UserRoles.admin) {
             triggerUnauthorized()
         }
@@ -155,7 +156,7 @@ const Signup = () => {
                             <div className='passwordHint mt-4' hidden>
                                 <span>
                                     Hint: Password must contain at least 1 Number, 1 uppercase letter,
-                                    1 special character and length must be longer than 4
+                                    1 special character and length must be longer than 8
                                 </span>
                             </div>
                             <div className="mt-4 form-group">

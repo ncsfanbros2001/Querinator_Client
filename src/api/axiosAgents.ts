@@ -3,6 +3,7 @@ import { SavedQuery } from "../models/SavedQuery";
 import { LoginCredentials } from "../models/LoginCredentials";
 import { RegisterInfo } from "../models/registerInfo"
 import { store } from '../Stores/store'
+import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
 
 axios.defaults.baseURL = 'https://localhost:44360/api'
 
@@ -88,6 +89,9 @@ const AccountActions = {
     },
     getUsers: () => {
         return requests.get(`Account/getUsers`)
+    },
+    changePassword: (changePasswordInfo: ChangePasswordInfo) => {
+        return requests.put(`Account/changePassword`, changePasswordInfo)
     }
 }
 

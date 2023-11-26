@@ -8,6 +8,7 @@ import { RegisterInfo } from "../models/registerInfo";
 import { jwtDecode } from "jwt-decode";
 import { LoginResult } from "../models/LoginResult";
 import { router } from "../Routes";
+import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
 
 export default class AccountStore {
     isLoading: boolean = false;
@@ -22,10 +23,6 @@ export default class AccountStore {
         autorun(() => {
             if (this.userToken) {
                 this.loggedInUser = jwtDecode(this.userToken)
-            }
-
-            if (this.loggedInUser?.isLocked === true) {
-                this.logout()
             }
         })
     }
@@ -68,14 +65,15 @@ export default class AccountStore {
     }
 
     logout = async () => {
-        localStorage.removeItem(StaticValues.userToken)
-        this.setLoggedInUser(null)
+        await localStorage.removeItem(StaticValues.userToken)
+        await this.setLoggedInUser(null)
 
         router.navigate('/')
     }
 
     register = async (registerInfo: RegisterInfo) => {
         this.setIsLoading(true)
+        this.setErrors([])
 
         await axiosAgents.AccountActions.register(registerInfo)
             .then(() => {
@@ -125,6 +123,39 @@ export default class AccountStore {
             })
 
         this.setIsLoading(false)
+    }
+
+    changeUserPassword = async (changePasswordInfo: ChangePasswordInfo) => {
+        this.setIsLoading(true)
+        this.setErrors([])
+
+        await axiosAgents.AccountActions.changePassword(changePasswordInfo)
+            .then(() => {
+                this.setErrors([])
+                this.setIsLoading(false)
+
+                this.setIsLoading(false)
+                toast.success("Change Password Successfully")
+            })
+            .catch((error) => {
+                let errorArrays: any = [];
+
+                if (error.response.data.errors) {
+                    const errorValues: any = Object.values(error.response.data.errors)
+                    errorArrays = errorArrays.concat(...errorValues);
+
+                    this.setErrors(errorArrays)
+                }
+                else if (!error.response.data.errors && error.response.data) {
+                    errorArrays[0] = error.response.data
+
+                    this.setErrors(errorArrays)
+                }
+
+                this.setIsLoading(false)
+            })
+
+        console.log(this.errors)
     }
 
     triggerUnauthorized = () => {

@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { StaticValues, UserRoles } from '../utilities/Statics';
 import { useStore } from '../Stores/store';
+import { observer } from 'mobx-react-lite';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -79,4 +80,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default observer(Navbar)
