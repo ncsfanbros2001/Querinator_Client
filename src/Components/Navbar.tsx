@@ -43,7 +43,7 @@ const Navbar = () => {
                         <div className="dropdown">
                             <button className="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                <b className='mx-1'>{loggedInUser?.displayName}</b>
+                                <b className='mx-1'>{loggedInUser?.displayName} {loggedInUser?.role === UserRoles.admin && '(Admin)'}</b>
                             </button>
 
                             <ul className="dropdown-menu dropdown-menu-end">

@@ -3,7 +3,7 @@ import { LoginCredentials } from "../models/LoginCredentials";
 import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
 import { User } from "../models/User";
-import { StaticValues, UserRoles } from "../utilities/Statics";
+import { StaticValues } from "../utilities/Statics";
 import { RegisterInfo } from "../models/registerInfo";
 import { jwtDecode } from "jwt-decode";
 import { LoginResult } from "../models/LoginResult";
@@ -47,10 +47,9 @@ export default class AccountStore {
         await axiosAgents.AccountActions.login(loginCredentials)
             .then((response: LoginResult) => {
                 localStorage.setItem(StaticValues.userToken, response?.token)
-                toast.success("Login Successfully")
                 this.setIsLoading(false)
 
-                window.location.replace("http://localhost:3000/")
+                window.location.replace("/")
             })
             .catch((error) => {
                 toast.error(error?.response?.data)
@@ -154,8 +153,6 @@ export default class AccountStore {
 
                 this.setIsLoading(false)
             })
-
-        console.log(this.errors)
     }
 
     triggerUnauthorized = () => {

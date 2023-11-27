@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { SavedQuery } from "../models/SavedQuery"
 import '../Stylesheets/Collapsable.css'
-import Spinner from "../Helpers/Spinner"
 import { useStore } from "../Stores/store"
 import UpdateModal from "./UpdateModal"
 import { useState } from "react"
@@ -41,8 +40,6 @@ const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props)
                     </h2>
 
                     <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse">
-                        {isLoading && <Spinner />}
-
                         {savedQueries !== undefined && savedQueries.length > 0
                             ? savedQueries.map((item: SavedQuery, key: number) => (
                                 <div className="accordion-body d-flex flex-row justify-content-between" key={key}>
@@ -75,7 +72,6 @@ const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props)
                                     <h3>You don't have any saved query yet</h3>
                                 </div>
                             )}
-
                     </div>
                 </div>
 

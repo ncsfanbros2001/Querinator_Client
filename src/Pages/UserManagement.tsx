@@ -57,7 +57,6 @@ const UserManagement = () => {
                                     <Spinner />
                                 </td>
                             </tr>
-
                         )}
                     </tbody>
                 </table>

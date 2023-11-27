@@ -24,7 +24,7 @@ axios.interceptors.response.use(async response => {
 
     switch (status) {
         case 401 || 403:
-            window.location.replace("http://localhost:3000/unauthorized")
+            window.location.replace("/unauthorized")
             break
     }
 

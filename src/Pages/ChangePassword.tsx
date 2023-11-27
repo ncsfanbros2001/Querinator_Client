@@ -9,8 +9,6 @@ const ChangePassword = () => {
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
 
-    const newPasswordErrorConditions = ['new', 'strong'];
-
     const { accountStore } = useStore()
     const { changeUserPassword, loggedInUser, isLoading, errors, setErrors } = accountStore
 

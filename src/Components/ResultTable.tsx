@@ -17,7 +17,7 @@ const ResultTable = () => {
     return (
         <div>
             {isLoading === false ? (<div>
-                {queryResult != undefined && entireResultHidden === false && (
+                {queryResult !== undefined && entireResultHidden === false && (
                     <div>
                         <h1 className='text-success mt-5 text-center'>RESULT</h1>
                         <div className='d-flex justify-content-center p-2'>
@@ -26,7 +26,7 @@ const ResultTable = () => {
                                 border: '2px solid #696969'
                             }}>
                                 <h3>Query Status:
-                                    <span className={queryResult?.isSuccess == true ? 'text-success' : 'text-danger'}>
+                                    <span className={queryResult?.isSuccess === true ? 'text-success' : 'text-danger'}>
                                         {queryResult?.isSuccess === true ? (' Success') : (' Failed')}
                                     </span>
                                 </h3>

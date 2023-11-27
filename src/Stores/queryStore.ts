@@ -3,14 +3,13 @@ import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
 import { SavedQuery } from "../models/SavedQuery";
 import { QueryResult } from "../models/QueryResult";
-import { TableName } from "../models/TableName";
 
 export default class QueryStore {
     queryResult: QueryResult | undefined = undefined;
     savedQueries: SavedQuery[] = [];
     columnNames: string[] = [];
     singleSavedQuery: SavedQuery | null = null;
-    tableNames: TableName[] = [];
+    tableNames: string[] = [];
 
     isLoading: boolean = false;
     tableHidden: boolean = false;
