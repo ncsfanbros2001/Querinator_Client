@@ -16,7 +16,7 @@ const QueryRecommendations = () => {
 
     useEffect(() => {
         loadAllTableName()
-    }, [tableNames])
+    }, [])
 
     return (
         <>

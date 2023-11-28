@@ -41,17 +41,15 @@ const QueryExecuter = () => {
 
             <div className='form-group d-flex justify-content-center p-2'>
                 <button
-                    className='btn btn-success'
+                    className='btn btn-success operateBtn'
                     disabled={queryString === '' || isLoading}
-                    style={{ height: 40 }}
                     onClick={() => executeQuery(queryString, loggedInUser?.role!)}>
                     <i className="bi bi-lightning"></i> Execute
                 </button>
 
                 <button
-                    className='btn btn-primary mx-2'
+                    className='btn btn-primary mx-2 operateBtn'
                     disabled={queryString === '' || isLoading}
-                    style={{ height: 40 }}
                     data-bs-toggle="collapse"
                     data-bs-target="#saveQueryAccordion"
                     onClick={() => setSaveMode(!saveMode)}>
@@ -59,13 +57,18 @@ const QueryExecuter = () => {
                 </button>
 
                 <button
-                    className='btn btn-warning'
-                    style={{ height: 40 }}
+                    className='btn btn-warning operateBtn'
                     disabled={isLoading}
                     onClick={() => navigate('/recommend')}>
                     <i className="bi bi-list-columns"></i>  Go To Query Recommedations
                 </button>
 
+                <button
+                    className='btn btn-purple operateBtn'
+                    disabled={isLoading}
+                    onClick={() => navigate('/databaseConnection')}>
+                    <i className="bi bi-database-gear"></i>  Database Connection
+                </button>
             </div>
 
             <div className="d-flex justify-content-center m-3">

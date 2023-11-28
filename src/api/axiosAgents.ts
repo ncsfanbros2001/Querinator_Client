@@ -5,7 +5,7 @@ import { RegisterInfo } from "../models/registerInfo"
 import { store } from '../Stores/store'
 import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
 
-axios.defaults.baseURL = 'https://localhost:44360/api'
+axios.defaults.baseURL = 'https://localhost:5100/api'
 
 axios.interceptors.request.use((config) => {
     const token = store.accountStore.userToken
@@ -96,8 +96,11 @@ const AccountActions = {
 }
 
 const ConnectionActions = {
-    getDbConnection: () => {
+    retrieveDbConnection: () => {
         return requests.get('/Connection')
+    },
+    setDbConnection: (serverName: string, databaseName: string) => {
+        return requests.get(`/Connection/${encodeURIComponent(serverName)}/${databaseName}`)
     }
 }
 

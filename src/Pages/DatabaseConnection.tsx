@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import "../Stylesheets/Database_Connection.css"
 import { useStore } from "../Stores/store";
 import { observer } from "mobx-react-lite";
-import { ServerList } from "../models/ServerList";
 
 const DatabaseConnection = () => {
     const [isUnlocked, setIsUnlocked] = useState<boolean>(true);
@@ -11,7 +10,15 @@ const DatabaseConnection = () => {
     const [databaseName, setDatabaseName] = useState<string>('');
 
     const { connectionStore } = useStore();
-    const { isLoading, serverList } = connectionStore
+    const { setDbConnection } = connectionStore
+
+    const setConnection = () => {
+        setIsUnlocked(!isUnlocked)
+
+        if (isUnlocked === false) {
+            setDbConnection(serverName, databaseName)
+        }
+    }
 
     return (
         <div id='connectionContainr'>
@@ -19,24 +26,18 @@ const DatabaseConnection = () => {
                 <h1 className="text-success m-2">DATABASE CONNECTION STRING</h1>
 
                 <div className="row connectionRow m-3">
-                    <select className='form-control connectionSelect' disabled={isUnlocked}>
-                        <option disabled selected={serverName === ''}>--Server--</option>
-                    </select>
+                    <input className='form-control' disabled={isUnlocked} placeholder="Server name..."
+                        onChange={(e) => setServerName(e.target.value)} />
                 </div>
 
                 <div className="row connectionRow m-3">
-                    <select className='form-control connectionSelect' disabled={isUnlocked} value={databaseName}
-                        onChange={(e) => setDatabaseName(e.target.value)}>
-                        <option disabled selected={databaseName === ''}>--Database--</option>
-                        {serverList.length > 0 && serverList.map((item: ServerList, key: number) => (
-                            <option key={key}>{item.dbName}</option>
-                        ))}
-                    </select>
+                    <input className='form-control' disabled={isUnlocked} placeholder="Database name..."
+                        onChange={(e) => setDatabaseName(e.target.value)} />
                 </div>
 
                 <div className="form-check form-switch d-flex justify-content-center">
                     <input className="form-check-input" type="checkbox" role="switch" id="lockSwitch"
-                        style={{ zoom: 2.2 }} onChange={() => setIsUnlocked(!isUnlocked)} />
+                        style={{ zoom: 2.2 }} onChange={() => setConnection()} />
                 </div>
             </div>
         </div>

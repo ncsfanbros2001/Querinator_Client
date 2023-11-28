@@ -13,3 +13,13 @@
 .text-success {
     user-select: none;
 }
+
+.btn-purple {
+    background-color: rgb(138, 43, 226) !important;
+    color: white !important;
+    margin-left: 10px;
+}
+
+.operateBtn {
+    height: 40px;
+}

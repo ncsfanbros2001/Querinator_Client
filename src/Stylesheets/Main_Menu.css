@@ -50,6 +50,17 @@
     transition-duration: 0.3s;
 }
 
+.purpleBG:hover {
+    background-color: #9400D3 !important;
+    border: 2px solid white !important;
+    transition-duration: 0.3s;
+}
+
+.purpleBG {
+    background-color: #8A2BE2 !important;
+    color: whitesmoke !important;
+}
+
 .welcomeMessage {
     font-size: 36px;
     color: whitesmoke;

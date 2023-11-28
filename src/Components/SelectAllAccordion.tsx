@@ -45,7 +45,7 @@ const SelectAllAccordion = ({ tableNames, queryGroupName, isLoading }: Props) =>
                             </div>
                         )) : (
                             <div className="text-center p-2">
-                                <h3>Unable to load queries</h3>
+                                <h3>Unable to load Select All queries</h3>
                             </div>
                         )}
                     </div>

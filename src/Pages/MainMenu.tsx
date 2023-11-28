@@ -20,8 +20,13 @@ const MainMenu = () => {
                         <button onClick={() => navigate('/query')} className='btnControl my-2 btn greenBG'>
                             Go to Query
                         </button>
+
                         <button onClick={() => navigate('/recommend')} className='btnControl btn blueBG'>
                             Checkout the Recommendations
+                        </button>
+
+                        <button onClick={() => navigate('/databaseConnection')} className='btnControl btn purpleBG'>
+                            Connection Settings
                         </button>
                     </div>
                 ) : (
