@@ -21,7 +21,7 @@ export default class AccountStore {
         makeAutoObservable(this)
 
         autorun(() => {
-            if (this.userToken) {
+            if (this.userToken !== null) {
                 this.loggedInUser = jwtDecode(this.userToken)
             }
         })

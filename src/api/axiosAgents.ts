@@ -4,6 +4,7 @@ import { LoginCredentials } from "../models/LoginCredentials";
 import { RegisterInfo } from "../models/registerInfo"
 import { store } from '../Stores/store'
 import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
+import { SetConnectionInfo } from "../models/SetConnectionInfo";
 
 axios.defaults.baseURL = 'https://localhost:5100/api'
 
@@ -99,8 +100,8 @@ const ConnectionActions = {
     retrieveDbConnection: () => {
         return requests.get('/Connection')
     },
-    setDbConnection: (serverName: string, databaseName: string) => {
-        return requests.get(`/Connection/${encodeURIComponent(serverName)}/${databaseName}`)
+    setDbConnection: (connectionInfo: SetConnectionInfo) => {
+        return requests.post(`/Connection`, connectionInfo)
     }
 }
 
