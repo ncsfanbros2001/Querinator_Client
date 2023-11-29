@@ -33,4 +33,16 @@
 option {
     font-size: 20px;
     margin: 5px;
+    user-select: none;
+}
+
+#setConnection {
+    width: 500px;
+    margin-top: 10px;
+}
+
+#setConnection:focus,
+#setConnection:active {
+    outline: none !important;
+    box-shadow: none;
 }

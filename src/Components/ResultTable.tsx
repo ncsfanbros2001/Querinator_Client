@@ -3,6 +3,7 @@ import { useStore } from '../Stores/store'
 import Spinner from '../Helpers/Spinner'
 import { observer } from 'mobx-react-lite'
 import { toast } from 'react-toastify'
+import '../Stylesheets/Result_Table.css'
 
 const ResultTable = () => {
     const { queryStore } = useStore()
@@ -50,7 +51,7 @@ const ResultTable = () => {
 
                 {queryResult?.isSuccess === true && tableHidden === false && (
                     <div className='d-flex flex-column align-items-center'>
-                        <div className='form-group d-flex justify-content-center p-3 text-center'>
+                        <div className='form-group d-flex justify-content-center p-3 text-center tableContainer'>
                             {queryResult?.result.length > 0 ? (
                                 <table className="table table-bordered">
                                     <thead>

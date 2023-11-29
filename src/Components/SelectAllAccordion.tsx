@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
+import '../Stylesheets/Accordion.css'
 
 interface Props {
     tableNames: string[]
@@ -29,7 +30,7 @@ const SelectAllAccordion = ({ tableNames, queryGroupName, isLoading }: Props) =>
                         </button>
                     </h2>
 
-                    <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse">
+                    <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse accordionContainer">
                         {tableNames.length > 0 ? tableNames.map((item: string, key: number) => (
                             <div className="accordion-body d-flex flex-row justify-content-between" key={key}>
                                 <div style={{ width: '80%' }} className="p-1">

@@ -97,11 +97,14 @@ const AccountActions = {
 }
 
 const ConnectionActions = {
-    retrieveDbConnection: () => {
-        return requests.get('/Connection')
+    retrieveDatabases: () => {
+        return requests.get('/Connection/databases')
+    },
+    retrieveServers: () => {
+        return requests.get('/Connection/servers')
     },
     setDbConnection: (connectionInfo: SetConnectionInfo) => {
-        return requests.post(`/Connection`, connectionInfo)
+        return requests.post(`/Connection/setConnection`, connectionInfo)
     }
 }
 

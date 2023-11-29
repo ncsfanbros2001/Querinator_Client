@@ -4,12 +4,15 @@ import { SetConnectionInfo } from "../models/SetConnectionInfo";
 import { toast } from "react-toastify";
 
 export default class ConnectionStore {
-    isLoading: boolean = false
+    isLoading: boolean = false;
+    servers: string[] = [];
+    databases: string[] = [];
 
     constructor() {
         makeAutoObservable(this)
         autorun(() => {
-
+            this.retrieveServers();
+            this.retrieveDatabases();
         })
     }
 
@@ -17,19 +20,40 @@ export default class ConnectionStore {
         this.isLoading = value
     }
 
-    // retrieveDbConnection = async () => {
-    //     this.setIsLoading(true)
+    setServers = (value: string[]) => {
+        this.servers = value
+    }
 
-    //     await axiosAgents.ConnectionActions.retrieveDbConnection()
-    //         .then(response => {
-    //             this.setServerList(response?.result)
-    //         })
-    //         .catch(() => {
-    //             toast.error("Failed to retrieve default queries")
-    //         })
+    setDatabases = (value: string[]) => {
+        this.databases = value
+    }
 
-    //     this.setIsLoading(false)
-    // }
+    retrieveServers = async () => {
+        this.setIsLoading(true)
+
+        await axiosAgents.ConnectionActions.retrieveServers()
+            .then(response => {
+                this.setServers(response?.result)
+            })
+            .catch(() => {
+                toast.error("Failed to retrieve default servers")
+            })
+        this.setIsLoading(false)
+    }
+
+    retrieveDatabases = async () => {
+        this.setIsLoading(true)
+
+        await axiosAgents.ConnectionActions.retrieveDatabases()
+            .then(response => {
+                this.setDatabases(response?.result)
+            })
+            .catch(() => {
+                toast.error("Failed to retrieve default databases")
+            })
+
+        this.setIsLoading(false)
+    }
 
     setDbConnection = async (connectionInfo: SetConnectionInfo) => {
         this.setIsLoading(true)
@@ -39,7 +63,7 @@ export default class ConnectionStore {
                 toast.success("Setup connection successfully")
             })
             .catch(() => {
-                toast.error("Failed to setup connection")
+                toast.error("Failed to setup connection. Please verify that the name is correct")
             })
 
         this.setIsLoading(false)

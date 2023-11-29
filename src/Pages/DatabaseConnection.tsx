@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react"
+import { useRef, useState } from "react"
 import "../Stylesheets/Database_Connection.css"
 import { useStore } from "../Stores/store";
 import { observer } from "mobx-react-lite";
+import SpinnerButton from "../Helpers/SpinnerButton";
 
 const DatabaseConnection = () => {
-    const [isUnlocked, setIsUnlocked] = useState<boolean>(true);
+    const [isLocked, setIsLocked] = useState<boolean>(true);
+    const [requiresCredentials, setRequiresCredentials] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const [serverName, setServerName] = useState<string>('');
     const [databaseName, setDatabaseName] = useState<string>('');
     const [username, setUserName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const usernameField = useRef(null)
+    const passwordField = useRef(null)
 
     const { connectionStore } = useStore();
-    const { setDbConnection } = connectionStore
+    const { setDbConnection, servers, databases, isLoading } = connectionStore
 
-    const setConnection = () => {
-        setIsUnlocked(!isUnlocked)
-
-        if (isUnlocked === false) {
+    const setConnection = async () => {
+        if (isLocked === false) {
             setDbConnection({
                 serverName: serverName,
                 databaseName: databaseName,
@@ -27,6 +29,7 @@ const DatabaseConnection = () => {
                 password: password
             })
         }
+        setIsLocked(!isLocked)
     }
 
     return (
@@ -34,24 +37,62 @@ const DatabaseConnection = () => {
             <div id='connectionContent'>
                 <h1 className="text-success m-2">DATABASE CONNECTION STRING</h1>
 
-                <div className="row connectionRow m-3">
-                    <input type="text" className='form-control' disabled={isUnlocked} placeholder="Server name..."
-                        onChange={(e) => setServerName(e.target.value)} />
-                </div>
 
                 <div className="row connectionRow m-3">
-                    <input type="text" className='form-control' disabled={isUnlocked} placeholder="Database name..."
-                        onChange={(e) => setDatabaseName(e.target.value)} />
+                    <select className='form-control connectionSelect' disabled={isLocked}
+                        onChange={(e) => {
+                            setServerName(e.target.value)
+                        }}>
+
+                        <option disabled selected value="">---Server---</option>
+                        {servers.length > 0 && servers.map((item: string, key: number) => (
+                            <option key={key}>{item}</option>
+                        ))}
+                    </select>
                 </div>
+
+
+                <div className="row connectionRow m-3">
+                    <select className='form-control connectionSelect' disabled={isLocked} placeholder="database"
+                        onChange={(e) => setDatabaseName(e.target.value)}>
+
+                        <option disabled selected value="">---Databases---</option>
+                        {databases.length > 0 && databases.map((item: string, key: number) => (
+                            <option key={key}>{item}</option>
+                        ))}
+                    </select>
+                </div>
+
+
+                <div className="form-check form-switch">
+                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" style={{ zoom: 1.4 }}
+                        onChange={() => {
+                            if (requiresCredentials === true) {
+                                setUserName('');
+                                setPassword('');
+
+                                (usernameField.current as any).value = '';
+                                (passwordField.current as any).value = '';
+                            }
+                            setRequiresCredentials(!requiresCredentials)
+                        }} />
+                    <label className="form-check-label" htmlFor="flexSwitchCheckChecked" style={{ fontSize: '20px' }}>
+                        SQL Server Authentication
+                    </label>
+                </div>
+
+
 
                 <div className="row connectionRow m-3 form-group">
                     <div className="col-6">
-                        <input type="text" className='form-control' disabled={isUnlocked} placeholder="Username..."
-                            onChange={(e) => setUserName(e.target.value)} />
+                        <input type="text" className='form-control' disabled={!requiresCredentials} placeholder="Username..."
+                            onChange={(e) => setUserName(e.target.value)} ref={usernameField} />
                     </div>
+
+
                     <div className="col-6 d-flex justify-content-center">
-                        <input type={showPassword ? 'text' : 'password'} className='form-control' disabled={isUnlocked}
-                            placeholder="Password..." onChange={(e) => setPassword(e.target.value)} />
+                        <input type={showPassword ? 'text' : 'password'} className='form-control' disabled={!requiresCredentials}
+                            placeholder="Password..." onChange={(e) => setPassword(e.target.value)} ref={passwordField} />
 
                         <button className="btn btn-success mx-2" onClick={() => setShowPassword(!showPassword)}>
                             <i className={showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
@@ -59,9 +100,12 @@ const DatabaseConnection = () => {
                     </div>
                 </div>
 
-                <div className="form-check form-switch d-flex justify-content-center text-center">
-                    <input className="form-check-input" type="checkbox" role="switch" id="lockSwitch"
-                        style={{ zoom: 2.2 }} onChange={() => setConnection()} />
+
+                <div className="form-group">
+                    <button className={`btn ${isLocked ? 'btn-outline-success' : 'btn-success'} form-control`} disabled={isLoading}
+                        id="setConnection" onClick={() => setConnection()}>
+                        {!isLoading ? 'Setup Connection' : <SpinnerButton />}
+                    </button>
                 </div>
             </div>
         </div>

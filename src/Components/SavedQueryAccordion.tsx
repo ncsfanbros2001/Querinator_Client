@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { SavedQuery } from "../models/SavedQuery"
-import '../Stylesheets/Collapsable.css'
+import '../Stylesheets/Accordion.css'
 import { useStore } from "../Stores/store"
 import UpdateModal from "./UpdateModal"
 import { useState } from "react"
@@ -39,7 +39,7 @@ const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props)
                         </button>
                     </h2>
 
-                    <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse">
+                    <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse accordionContainer">
                         {savedQueries !== undefined && savedQueries.length > 0
                             ? savedQueries.map((item: SavedQuery, key: number) => (
                                 <div className="accordion-body d-flex flex-row justify-content-between" key={key}>
