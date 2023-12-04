@@ -14,14 +14,26 @@ interface Props {
 
 const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading }: Props) => {
     const navigate = useNavigate()
-    const { queryStore } = useStore()
-    const { deleteSavedQuery } = queryStore
+    const { queryStore, accountStore } = useStore()
+    const { executeQuery, deleteSavedQuery } = queryStore
+    const { loggedInUser } = accountStore
 
     const [updateId, setUpdateId] = useState<string>("")
     const [updateMode, setUpdateMode] = useState<boolean>(false)
 
     const execute = (query: string) => {
-        navigate(`/query/${query}`)
+        executeQuery({
+            query: query,
+            role: loggedInUser?.role!,
+            userId: loggedInUser?.id!
+        });
+
+        const queryString = {
+            query: query
+        }
+
+        var encodedData = encodeURIComponent(JSON.stringify(queryString));
+        navigate(`/query/${encodedData}`)
     }
 
     const setAccordionId = (groupName: string) => {

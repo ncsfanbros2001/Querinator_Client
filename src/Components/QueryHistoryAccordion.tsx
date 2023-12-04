@@ -1,18 +1,34 @@
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
 import '../Stylesheets/Accordion.css'
+import { QueryHistory } from '../models/QueryHistory'
+import { useStore } from '../Stores/store'
 
 interface Props {
-    tableNames: string[]
+    queryHistory: QueryHistory[]
     queryGroupName: string
     isLoading: boolean
 }
 
-const SelectAllAccordion = ({ tableNames, queryGroupName, isLoading }: Props) => {
+const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading }: Props) => {
     const navigate = useNavigate();
+    const { queryStore, accountStore } = useStore()
+    const { executeQuery } = queryStore
+    const { loggedInUser } = accountStore
 
     const execute = (query: string) => {
-        navigate(`/query/${query}`)
+        executeQuery({
+            query: query,
+            role: loggedInUser?.role!,
+            userId: loggedInUser?.id!
+        });
+
+        const queryString = {
+            query: query
+        }
+
+        var encodedData = encodeURIComponent(JSON.stringify(queryString));
+        navigate(`/query/${encodedData}`)
     }
 
     const setAccordionId = (groupName: string) => {
@@ -31,15 +47,15 @@ const SelectAllAccordion = ({ tableNames, queryGroupName, isLoading }: Props) =>
                     </h2>
 
                     <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse accordionContainer">
-                        {tableNames.length > 0 ? tableNames.map((item: string, key: number) => (
+                        {queryHistory.length > 0 ? queryHistory.map((item: QueryHistory, key: number) => (
                             <div className="accordion-body d-flex flex-row justify-content-between" key={key}>
                                 <div style={{ width: '80%' }} className="p-1">
-                                    <h5 className="queryTitle">Select All {item}</h5>
+                                    <h5 className="queryTitle">{item.query}</h5>
                                 </div>
 
                                 <div className="d-flex justify-content-end" style={{ width: '35%' }}>
                                     <button className='btn btn-success function-button' disabled={isLoading}
-                                        onClick={() => execute("SELECT * FROM " + item)}>
+                                        onClick={() => execute(item.query)}>
                                         <i className="bi bi-lightning"></i>
                                     </button>
                                 </div>
@@ -56,4 +72,4 @@ const SelectAllAccordion = ({ tableNames, queryGroupName, isLoading }: Props) =>
     )
 }
 
-export default observer(SelectAllAccordion)
+export default observer(QueryHistoryAccordion)

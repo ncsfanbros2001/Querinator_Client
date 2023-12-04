@@ -5,6 +5,7 @@ import { RegisterInfo } from "../models/registerInfo"
 import { store } from '../Stores/store'
 import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
 import { SetConnectionInfo } from "../models/SetConnectionInfo";
+import { QueryHistory } from "../models/QueryHistory";
 
 axios.defaults.baseURL = 'https://localhost:5100/api'
 
@@ -40,6 +41,9 @@ const requests = {
     get: (url: string) => {
         return axios.get(url).then(responseBody);
     },
+    getWithBody: (url: string, body: {}) => {
+        return axios.get(url, body).then(responseBody);
+    },
     post: (url: string, body: {}) => {
         return axios.post(url, body).then(responseBody);
     },
@@ -52,8 +56,8 @@ const requests = {
 }
 
 const QueryActions = {
-    queryResults: (queryString: string, userRole: string) => {
-        return requests.get(`/Query/executeQuery/${queryString}/${userRole}`);
+    queryResults: (queryHistory: QueryHistory) => {
+        return requests.post(`/Query/executeQuery`, queryHistory);
     },
     saveQuery: (queryToSave: SavedQuery) => {
         return requests.post(`/Query`, queryToSave);
@@ -70,8 +74,8 @@ const QueryActions = {
     getOneSavedQuery: (queryId: string) => {
         return requests.get(`/Query/${queryId}`);
     },
-    getAllTableName: () => {
-        return requests.get('/Query/tableName')
+    getQueryHistory: (userId: string) => {
+        return requests.get(`/Query/history/${userId}`);
     }
 }
 

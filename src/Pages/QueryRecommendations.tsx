@@ -2,20 +2,17 @@ import { useEffect } from "react"
 import SavedQueryAccordion from "../Components/SavedQueryAccordion"
 import { useStore } from "../Stores/store"
 import { observer } from "mobx-react-lite"
-import SelectAllAccordion from "../Components/SelectAllAccordion"
+import QueryHistoryAccordion from "../Components/QueryHistoryAccordion"
 
 const QueryRecommendations = () => {
 
     const { queryStore, accountStore } = useStore()
-    const { loadSavedQueries, savedQueries, isLoading, loadAllTableName, tableNames } = queryStore
+    const { loadSavedQueries, savedQueries, isLoading, getQueryHistory, queryHistory } = queryStore
     const { loggedInUser } = accountStore
 
     useEffect(() => {
         loadSavedQueries(loggedInUser?.id!)
-    }, [savedQueries.length === 0 || savedQueries])
-
-    useEffect(() => {
-        loadAllTableName()
+        getQueryHistory(loggedInUser?.id!)
     }, [])
 
     return (
@@ -28,7 +25,7 @@ const QueryRecommendations = () => {
                 </div>
 
                 <div className="container">
-                    <SelectAllAccordion tableNames={tableNames} queryGroupName={"Select All Queries"} isLoading={isLoading} />
+                    <QueryHistoryAccordion queryHistory={queryHistory} queryGroupName={"Query History"} isLoading={isLoading} />
                 </div>
             </div>
         </>

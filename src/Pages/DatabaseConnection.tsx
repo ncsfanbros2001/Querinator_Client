@@ -3,6 +3,7 @@ import "../Stylesheets/Database_Connection.css"
 import { useStore } from "../Stores/store";
 import { observer } from "mobx-react-lite";
 import SpinnerButton from "../Helpers/SpinnerButton";
+import { toast } from "react-toastify";
 
 const DatabaseConnection = () => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
@@ -22,12 +23,17 @@ const DatabaseConnection = () => {
 
     const setConnection = async () => {
         if (isLocked === false) {
-            setDbConnection({
-                serverName: serverName,
-                databaseName: databaseName,
-                username: username,
-                password: password
-            })
+            if (username !== '' || password !== '') {
+                setDbConnection({
+                    serverName: serverName,
+                    databaseName: databaseName,
+                    username: username,
+                    password: password
+                })
+            }
+            else {
+                toast.error("Username and password are required")
+            }
         }
         setIsLocked(!isLocked)
     }
@@ -66,6 +72,7 @@ const DatabaseConnection = () => {
 
                 <div className="form-check form-switch">
                     <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" style={{ zoom: 1.4 }}
+                        disabled={serverName === '' || databaseName === ''}
                         onChange={() => {
                             if (requiresCredentials === true) {
                                 setUserName('');
@@ -76,6 +83,7 @@ const DatabaseConnection = () => {
                             }
                             setRequiresCredentials(!requiresCredentials)
                         }} />
+
                     <label className="form-check-label" htmlFor="flexSwitchCheckChecked" style={{ fontSize: '20px' }}>
                         SQL Server Authentication
                     </label>
@@ -102,7 +110,7 @@ const DatabaseConnection = () => {
 
 
                 <div className="form-group">
-                    <button className={`btn ${isLocked ? 'btn-outline-success' : 'btn-success'} form-control`} disabled={isLoading}
+                    <button className={`btn ${isLocked ? 'btn-success' : 'btn-primary'} form-control`} disabled={isLoading}
                         id="setConnection" onClick={() => setConnection()}>
                         {!isLoading ? 'Setup Connection' : <SpinnerButton />}
                     </button>

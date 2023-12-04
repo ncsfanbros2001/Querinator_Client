@@ -1,15 +1,16 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
 import { SavedQuery } from "../models/SavedQuery";
 import { QueryResult } from "../models/QueryResult";
+import { QueryHistory } from "../models/QueryHistory";
 
 export default class QueryStore {
     queryResult: QueryResult | undefined = undefined;
     savedQueries: SavedQuery[] = [];
     columnNames: string[] = [];
     singleSavedQuery: SavedQuery | null = null;
-    tableNames: string[] = [];
+    queryHistory: QueryHistory[] = [];
 
     isLoading: boolean = false;
     tableHidden: boolean = false;
@@ -51,6 +52,10 @@ export default class QueryStore {
         this.columnNames = value
     }
 
+    setQueryHistory = (value: QueryHistory[]) => {
+        this.queryHistory = value
+    }
+
     parseToJSON = (value: any) => {
         if (value !== undefined) {
             let jsonValue = JSON.parse(JSON.stringify(value))
@@ -65,20 +70,20 @@ export default class QueryStore {
         this.singleSavedQuery = null
     }
 
-    executeQuery = async (queryString: string, userRole: string) => {
+    executeQuery = async (queryHistory: QueryHistory) => {
         this.setIsLoading(true)
 
-        await axiosAgents.QueryActions.queryResults(queryString, userRole)
+        await axiosAgents.QueryActions.queryResults(queryHistory)
             .then(response => {
                 this.setQueryResult(this.parseToJSON(response))
 
-                if (queryString.toLowerCase().includes('select') && response?.result?.length > 0) {
+                if (queryHistory.query.toLowerCase().includes('select') && response?.result?.length > 0) {
                     this.setColumnNames(
                         [...Object.keys(response?.result[0])]
                     )
                     this.setTableHidden(false)
                 }
-                else if (queryString.toLowerCase().includes('select') === false) {
+                else if (queryHistory.query.toLowerCase().includes('select') === false) {
                     this.setTableHidden(true)
                 }
             })
@@ -163,16 +168,13 @@ export default class QueryStore {
             })
     }
 
-    loadAllTableName = async () => {
+    getQueryHistory = async (userId: string) => {
         this.setIsLoading(true)
-
-        await axiosAgents.QueryActions.getAllTableName()
+        await axiosAgents.QueryActions.getQueryHistory(userId)
             .then((response) => {
-                runInAction(() => {
-                    this.tableNames = response?.result
-                })
+                this.setQueryHistory(response?.result)
             })
-            .catch((error) => {
+            .catch(error => {
                 if (error?.response?.data) {
                     toast.error(error?.response?.data?.errorMessages[0])
                 }
