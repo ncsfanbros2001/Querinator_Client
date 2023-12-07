@@ -1,18 +1,29 @@
-import { autorun, makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, reaction } from "mobx";
 import axiosAgents from "../api/axiosAgents";
 import { SetConnectionInfo } from "../models/SetConnectionInfo";
 import { toast } from "react-toastify";
+import { ServerAndDb } from "../models/ServerAndDb";
 
 export default class ConnectionStore {
     isLoading: boolean = false;
     servers: string[] = [];
     databases: string[] = [];
+    currentServerAndDb: ServerAndDb | null = null;
 
     constructor() {
         makeAutoObservable(this)
-        autorun(() => {
-            this.retrieveServers();
-            this.retrieveDatabases();
+        autorun(async () => {
+            if (this.servers.length === 0 || this.databases.length === 0) {
+                await this.retrieveServers();
+                await this.retrieveDatabases();
+            }
+
+            if (this.servers.length > 0 && this.databases.length > 0 && this.currentServerAndDb === null) {
+                this.setCurrentServerAndDb({
+                    server: this.servers[0],
+                    database: this.databases[0]
+                })
+            }
         })
     }
 
@@ -28,6 +39,10 @@ export default class ConnectionStore {
         this.databases = value
     }
 
+    setCurrentServerAndDb = (value: ServerAndDb | null) => {
+        this.currentServerAndDb = value
+    }
+
     retrieveServers = async () => {
         this.setIsLoading(true)
 
@@ -38,6 +53,7 @@ export default class ConnectionStore {
             .catch(() => {
                 toast.error("Failed to retrieve default servers")
             })
+
         this.setIsLoading(false)
     }
 
@@ -59,7 +75,12 @@ export default class ConnectionStore {
         this.setIsLoading(true)
 
         await axiosAgents.ConnectionActions.setDbConnection(connectionInfo)
-            .then(() => {
+            .then((response) => {
+                this.setCurrentServerAndDb({
+                    server: response.result.serverName,
+                    database: response.result.databaseName
+                })
+
                 toast.success("Setup connection successfully")
             })
             .catch(() => {

@@ -19,20 +19,25 @@ const DatabaseConnection = () => {
     const passwordField = useRef(null)
 
     const { connectionStore } = useStore();
-    const { setDbConnection, servers, databases, isLoading } = connectionStore
+    const { setDbConnection, servers, databases, isLoading, setCurrentServerAndDb } = connectionStore
 
     const setConnection = async () => {
         if (isLocked === false) {
-            if (username !== '' || password !== '') {
+            if ((username === '' || password === '') && requiresCredentials) {
+                toast.error("Username and password are required")
+            }
+            else {
                 setDbConnection({
                     serverName: serverName,
                     databaseName: databaseName,
                     username: username,
                     password: password
                 })
-            }
-            else {
-                toast.error("Username and password are required")
+
+                setCurrentServerAndDb({
+                    server: serverName,
+                    database: databaseName
+                })
             }
         }
         setIsLocked(!isLocked)

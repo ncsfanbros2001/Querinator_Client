@@ -9,6 +9,10 @@ const ChangePassword = () => {
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
 
+    const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
+    const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+    const [showConfirmNewPassword, setShowConfirmNewPassword] = useState<boolean>(false);
+
     const { accountStore } = useStore()
     const { changeUserPassword, loggedInUser, isLoading, errors, setErrors } = accountStore
 
@@ -42,14 +46,24 @@ const ChangePassword = () => {
                         <div className="row mt-3">
                             <div className="form-group">
                                 <label htmlFor="oldPassField" className="form-label">Old Password</label>
-                                <input
-                                    disabled={isLoading}
-                                    type="text"
-                                    className="form-control"
-                                    id="emailLoginField"
-                                    autoComplete='false'
-                                    placeholder="Old password..."
-                                    onChange={(e) => setOldPassword(e.target.value)} />
+                                <div className="d-flex justify-content-center">
+                                    <input
+                                        disabled={isLoading}
+                                        type={showOldPassword ? 'text' : 'password'}
+                                        className="form-control"
+                                        id="emailLoginField"
+                                        autoComplete='false'
+                                        placeholder="Old password..."
+                                        onChange={(e) => setOldPassword(e.target.value)} />
+
+                                    <button className='btn btn-success mx-2'
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setShowOldPassword(!showOldPassword)
+                                        }}>
+                                        <i className={showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
+                                    </button>
+                                </div>
 
                                 {errors.length > 0 && errors.filter((error: string) => error.toLowerCase().includes('old'))
                                     .map((item: string, key: number) => (
@@ -61,14 +75,24 @@ const ChangePassword = () => {
                         <div className="row mt-3">
                             <div className="form-group">
                                 <label htmlFor="newPassField" className="form-label">New Password</label>
-                                <input
-                                    disabled={isLoading}
-                                    type="text"
-                                    className="form-control"
-                                    id="newPassField"
-                                    autoComplete='false'
-                                    placeholder="New password..."
-                                    onChange={(e) => setNewPassword(e.target.value)} />
+                                <div className="d-flex justify-content-center">
+                                    <input
+                                        disabled={isLoading}
+                                        type={showNewPassword ? 'text' : 'password'}
+                                        className="form-control"
+                                        id="newPassField"
+                                        autoComplete='false'
+                                        placeholder="New password..."
+                                        onChange={(e) => setNewPassword(e.target.value)} />
+
+                                    <button className='btn btn-success mx-2'
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setShowNewPassword(!showNewPassword)
+                                        }}>
+                                        <i className={showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
+                                    </button>
+                                </div>
 
                                 {errors.length > 0 && errors.filter((error: string) =>
                                     (error.toLowerCase().includes('new') || error.toLowerCase().includes('enough')) &&
@@ -79,17 +103,28 @@ const ChangePassword = () => {
                             </div>
                         </div>
 
-                        <div className="row mt-3">
+                        <div className="row mt-3 form-group">
                             <div className="form-group">
                                 <label htmlFor="confirmNewPassField" className="form-label">Confirm new password</label>
-                                <input
-                                    disabled={isLoading}
-                                    type="text"
-                                    className="form-control"
-                                    id="confirmNewPassField"
-                                    autoComplete='false'
-                                    placeholder="Confirm new password..."
-                                    onChange={(e) => setConfirmNewPassword(e.target.value)} />
+                                <div className="d-flex justify-content-center">
+                                    <input
+                                        disabled={isLoading}
+                                        type={showConfirmNewPassword ? 'text' : 'password'}
+                                        className="form-control"
+                                        id="confirmNewPassField"
+                                        autoComplete='false'
+                                        placeholder="Confirm new password..."
+                                        onChange={(e) => setConfirmNewPassword(e.target.value)} />
+
+
+                                    <button className='btn btn-success mx-2'
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setShowConfirmNewPassword(!showConfirmNewPassword)
+                                        }}>
+                                        <i className={showConfirmNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
+                                    </button>
+                                </div>
 
                                 {errors.length > 0 && errors.filter((error: string) =>
                                     error.toLowerCase().includes('change') || error.toLowerCase().includes('confirm'))

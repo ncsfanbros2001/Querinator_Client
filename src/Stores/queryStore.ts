@@ -56,16 +56,6 @@ export default class QueryStore {
         this.queryHistory = value
     }
 
-    parseToJSON = (value: any) => {
-        if (value !== undefined) {
-            let jsonValue = JSON.parse(JSON.stringify(value))
-            return jsonValue
-        }
-        else {
-            return undefined
-        }
-    }
-
     unloadSingleSavedQuery = () => {
         this.singleSavedQuery = null
     }
@@ -75,7 +65,7 @@ export default class QueryStore {
 
         await axiosAgents.QueryActions.queryResults(queryHistory)
             .then(response => {
-                this.setQueryResult(this.parseToJSON(response))
+                this.setQueryResult(response)
 
                 if (queryHistory.query.toLowerCase().includes('select') && response?.result?.length > 0) {
                     this.setColumnNames(
@@ -88,7 +78,7 @@ export default class QueryStore {
                 }
             })
             .catch(error => {
-                this.setQueryResult(this.parseToJSON(error?.response?.data))
+                this.setQueryResult(error?.response?.data)
             })
 
         this.setEntireResultHidden(false)

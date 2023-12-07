@@ -25,7 +25,10 @@ axios.interceptors.response.use(async response => {
     const { status } = error.response as AxiosResponse
 
     switch (status) {
-        case 401 || 403:
+        case 401:
+            window.location.replace("/unauthorized")
+            break
+        case 403:
             window.location.replace("/unauthorized")
             break
     }

@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.js';
-import React from 'react';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

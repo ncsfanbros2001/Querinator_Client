@@ -9,9 +9,10 @@ const QueryExecuter = () => {
     const [queryTitle, setQueryTitle] = useState<string>("");
     const [saveMode, setSaveMode] = useState<boolean>(false);
 
-    const { queryStore, accountStore } = useStore()
+    const { queryStore, accountStore, connectionStore } = useStore()
     const { executeQuery, saveQuery, isLoading } = queryStore
     const { loggedInUser } = accountStore
+    const { currentServerAndDb } = connectionStore
 
     const navigate = useNavigate()
     const param = useParams()
@@ -37,7 +38,17 @@ const QueryExecuter = () => {
     return (
         <div className='d-flex justify-content-center mx-5'>
             <div className='form-group col-9 mt-3'>
-                <h2 className='text-success ml-1'>YOUR QUERY:</h2>
+
+                <div className='d-flex justify-content-between mx-1'>
+                    <h2 className='text-success ml-1'>YOUR QUERY:</h2>
+
+                    <div className='connectionStatus'>
+                        <span>
+                            <b>Server:</b> {currentServerAndDb?.server!} | <b>Database:</b> {currentServerAndDb?.database!}
+                        </span>
+                    </div>
+
+                </div>
 
                 <input type='text'
                     className='form-control w-100'
