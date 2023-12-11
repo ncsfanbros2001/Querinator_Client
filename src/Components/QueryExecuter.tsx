@@ -44,7 +44,7 @@ const QueryExecuter = () => {
 
                     <div className='connectionStatus'>
                         <span>
-                            <b>Server:</b> {currentServerAndDb?.server!} | <b>Database:</b> {currentServerAndDb?.database!}
+                            <b>Server:</b> {currentServerAndDb.server} | <b>Database:</b> {currentServerAndDb.database}
                         </span>
                     </div>
 

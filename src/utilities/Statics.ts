@@ -1,5 +1,7 @@
 export enum StaticValues {
-    userToken = 'userToken'
+    userToken = 'userToken',
+    serverName = 'serverName',
+    databaseName = 'databaseName'
 }
 
 export enum UserRoles {

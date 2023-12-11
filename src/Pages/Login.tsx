@@ -47,7 +47,7 @@ const Login = () => {
                             className="form-control"
                             id="emailLoginField"
                             autoComplete='false'
-                            placeholder="Password..."
+                            placeholder="Email..."
                             onChange={(e) => setEmail(e.target.value)} />
                     </div>
 

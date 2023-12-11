@@ -1,29 +1,44 @@
-import { autorun, makeAutoObservable, reaction } from "mobx";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 import axiosAgents from "../api/axiosAgents";
 import { SetConnectionInfo } from "../models/SetConnectionInfo";
 import { toast } from "react-toastify";
 import { ServerAndDb } from "../models/ServerAndDb";
+import { StaticValues } from "../utilities/Statics";
 
 export default class ConnectionStore {
     isLoading: boolean = false;
     servers: string[] = [];
     databases: string[] = [];
-    currentServerAndDb: ServerAndDb | null = null;
+    currentServerAndDb: ServerAndDb = {
+        server: null,
+        database: null
+    }
 
     constructor() {
         makeAutoObservable(this)
-        autorun(async () => {
-            if (this.servers.length === 0 || this.databases.length === 0) {
-                await this.retrieveServers();
-                await this.retrieveDatabases();
-            }
 
-            if (this.servers.length > 0 && this.databases.length > 0 && this.currentServerAndDb === null) {
-                this.setCurrentServerAndDb({
-                    server: this.servers[0],
-                    database: this.databases[0]
-                })
-            }
+        autorun(async () => {
+            // if (localStorage.getItem(StaticValues.serverName)) {
+            //     this.setCurrentServerAndDb({
+            //         server: localStorage.getItem(StaticValues.serverName),
+            //         database: localStorage.getItem(StaticValues.databaseName)
+            //     })
+            // }
+
+
+
+            // if (this.servers.length > 0 && this.databases.length > 0
+            //     && this.currentServerAndDb.server === null
+            //     && localStorage.getItem(StaticValues.userToken)) {
+
+            //     this.setCurrentServerAndDb({
+            //         server: this.servers[0],
+            //         database: this.databases[0]
+            //     })
+
+            //     localStorage.setItem(StaticValues.serverName, this.servers[0]);
+            //     localStorage.setItem(StaticValues.databaseName, this.databases[0]);
+            // }
         })
     }
 
@@ -39,8 +54,10 @@ export default class ConnectionStore {
         this.databases = value
     }
 
-    setCurrentServerAndDb = (value: ServerAndDb | null) => {
-        this.currentServerAndDb = value
+    setCurrentServerAndDb = (value: ServerAndDb) => {
+        runInAction(() => {
+            this.currentServerAndDb = value
+        })
     }
 
     retrieveServers = async () => {

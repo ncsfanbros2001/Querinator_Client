@@ -1,9 +1,10 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "../Stylesheets/Database_Connection.css"
 import { useStore } from "../Stores/store";
 import { observer } from "mobx-react-lite";
 import SpinnerButton from "../Helpers/SpinnerButton";
 import { toast } from "react-toastify";
+import { StaticValues } from "../utilities/Statics";
 
 const DatabaseConnection = () => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
@@ -19,7 +20,15 @@ const DatabaseConnection = () => {
     const passwordField = useRef(null)
 
     const { connectionStore } = useStore();
-    const { setDbConnection, servers, databases, isLoading, setCurrentServerAndDb } = connectionStore
+    const { setDbConnection, servers, databases, isLoading, retrieveServers, retrieveDatabases,
+        setCurrentServerAndDb } = connectionStore
+
+    useEffect(() => {
+        if ((servers.length === 0 || databases.length === 0) && localStorage.getItem(StaticValues.userToken)) {
+            retrieveServers();
+            retrieveDatabases();
+        }
+    }, [])
 
     const setConnection = async () => {
         if (isLocked === false) {
@@ -31,7 +40,8 @@ const DatabaseConnection = () => {
                     serverName: serverName,
                     databaseName: databaseName,
                     username: username,
-                    password: password
+                    password: password,
+                    requiresCredentials: requiresCredentials
                 })
 
                 setCurrentServerAndDb({
@@ -51,32 +61,34 @@ const DatabaseConnection = () => {
 
                 <div className="row connectionRow m-3">
                     <select className='form-control connectionSelect' disabled={isLocked}
-                        onChange={(e) => {
-                            setServerName(e.target.value)
-                        }}>
+                        onChange={(e) => setServerName(e.target.value)}>
 
                         <option disabled selected value="">---Server---</option>
                         {servers.length > 0 && servers.map((item: string, key: number) => (
-                            <option key={key}>{item}</option>
+                            <option key={key}>
+                                {item}
+                            </option>
                         ))}
                     </select>
                 </div>
 
 
                 <div className="row connectionRow m-3">
-                    <select className='form-control connectionSelect' disabled={isLocked} placeholder="database"
+                    <select className='form-control connectionSelect' disabled={isLocked}
                         onChange={(e) => setDatabaseName(e.target.value)}>
 
                         <option disabled selected value="">---Databases---</option>
                         {databases.length > 0 && databases.map((item: string, key: number) => (
-                            <option key={key}>{item}</option>
+                            <option key={key}>
+                                {item}
+                            </option>
                         ))}
                     </select>
                 </div>
 
 
                 <div className="form-check form-switch">
-                    <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" style={{ zoom: 1.4 }}
+                    <input className="form-check-input" type="checkbox" id="sqlAuthCheckbox" style={{ zoom: 1.4 }}
                         disabled={serverName === '' || databaseName === ''}
                         onChange={() => {
                             if (requiresCredentials === true) {
@@ -117,7 +129,7 @@ const DatabaseConnection = () => {
                 <div className="form-group">
                     <button className={`btn ${isLocked ? 'btn-success' : 'btn-primary'} form-control`} disabled={isLoading}
                         id="setConnection" onClick={() => setConnection()}>
-                        {!isLoading ? 'Setup Connection' : <SpinnerButton />}
+                        {!isLoading ? (isLocked ? 'Setup Connection' : 'Save Connection') : <SpinnerButton />}
                     </button>
                 </div>
             </div>

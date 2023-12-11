@@ -1,4 +1,4 @@
 export interface ServerAndDb {
-    server: string,
-    database: string
+    server: string | null,
+    database: string | null
 }

@@ -61,7 +61,7 @@ const ChangePassword = () => {
                                             e.preventDefault()
                                             setShowOldPassword(!showOldPassword)
                                         }}>
-                                        <i className={showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
+                                        <i className={showOldPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
                                     </button>
                                 </div>
 
