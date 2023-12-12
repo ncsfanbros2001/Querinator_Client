@@ -127,7 +127,7 @@ const DatabaseConnection = () => {
 
 
                 <div className="form-group">
-                    <button className={`btn ${isLocked ? 'btn-success' : 'btn-primary'} form-control`} disabled={isLoading}
+                    <button style={{ backgroundColor: !isLocked ? '#006FCD' : '#107C10' }} disabled={isLoading}
                         id="setConnection" onClick={() => setConnection()}>
                         {!isLoading ? (isLocked ? 'Setup Connection' : 'Save Connection') : <SpinnerButton />}
                     </button>

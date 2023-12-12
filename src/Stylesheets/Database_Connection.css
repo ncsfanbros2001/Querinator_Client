@@ -39,6 +39,15 @@ option {
 #setConnection {
     width: 500px;
     margin-top: 10px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+}
+
+#setConnection:hover {
+    border: 3px solid black !important;
+    transition-duration: 0.1s;
 }
 
 #setConnection:focus,

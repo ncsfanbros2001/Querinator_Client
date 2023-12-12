@@ -10,36 +10,12 @@ export default class ConnectionStore {
     servers: string[] = [];
     databases: string[] = [];
     currentServerAndDb: ServerAndDb = {
-        server: null,
-        database: null
+        server: '(N/A)',
+        database: '(N/A)'
     }
 
     constructor() {
         makeAutoObservable(this)
-
-        autorun(async () => {
-            // if (localStorage.getItem(StaticValues.serverName)) {
-            //     this.setCurrentServerAndDb({
-            //         server: localStorage.getItem(StaticValues.serverName),
-            //         database: localStorage.getItem(StaticValues.databaseName)
-            //     })
-            // }
-
-
-
-            // if (this.servers.length > 0 && this.databases.length > 0
-            //     && this.currentServerAndDb.server === null
-            //     && localStorage.getItem(StaticValues.userToken)) {
-
-            //     this.setCurrentServerAndDb({
-            //         server: this.servers[0],
-            //         database: this.databases[0]
-            //     })
-
-            //     localStorage.setItem(StaticValues.serverName, this.servers[0]);
-            //     localStorage.setItem(StaticValues.databaseName, this.databases[0]);
-            // }
-        })
     }
 
     setIsLoading = (value: boolean) => {
@@ -105,5 +81,18 @@ export default class ConnectionStore {
             })
 
         this.setIsLoading(false)
+    }
+
+    retrieveCurrentServerAndDb = async () => {
+        await axiosAgents.ConnectionActions.retrieveCurrentServerAndDb()
+            .then(response => {
+                this.setCurrentServerAndDb({
+                    server: response.result.serverName,
+                    database: response.result.databaseName
+                })
+            })
+            .catch(() => {
+                toast.error("Failed to retrieve current server and database")
+            })
     }
 } 

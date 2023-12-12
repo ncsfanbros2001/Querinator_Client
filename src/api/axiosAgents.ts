@@ -112,6 +112,9 @@ const ConnectionActions = {
     },
     setDbConnection: (connectionInfo: SetConnectionInfo) => {
         return requests.post(`/Connection/setConnection`, connectionInfo)
+    },
+    retrieveCurrentServerAndDb: () => {
+        return requests.get(`/Connection/serverAndDb`)
     }
 }
 

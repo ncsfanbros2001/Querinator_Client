@@ -12,7 +12,7 @@ const QueryExecuter = () => {
     const { queryStore, accountStore, connectionStore } = useStore()
     const { executeQuery, saveQuery, isLoading } = queryStore
     const { loggedInUser } = accountStore
-    const { currentServerAndDb } = connectionStore
+    const { currentServerAndDb, retrieveCurrentServerAndDb } = connectionStore
 
     const navigate = useNavigate()
     const param = useParams()
@@ -20,6 +20,8 @@ const QueryExecuter = () => {
     const queryInputField = useRef(null)
 
     useEffect(() => {
+        retrieveCurrentServerAndDb()
+
         if (param.query != null) {
             const pr = JSON.parse(decodeURIComponent(param.query))
             setQueryString(pr.query);
