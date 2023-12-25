@@ -38,10 +38,19 @@ input:focus {
     box-shadow: none !important;
 }
 
-#submitButton:focus,
-#submitButton:active {
-    outline: none !important;
-    box-shadow: none;
+#submitButton {
+    width: 500px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background-color: #107C10;
+    width: 100%;
+}
+
+#submitButton:hover {
+    background-color: #228B22;
+    transition-duration: 0.3s;
 }
 
 #passwordLoginField,

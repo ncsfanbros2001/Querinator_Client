@@ -8,11 +8,14 @@ import { UserRoles } from '../utilities/Statics';
 const Signup = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const { accountStore } = useStore()
-    const { isLoading, register, triggerUnauthorized, loggedInUser, errors, setErrors } = accountStore
+    const { isAccountLoading, register, triggerUnauthorized, loggedInUser, errors, setErrors } = accountStore
+
+    const [roleList, setRoleList] = useState<string[]>([])
 
     const [displayName, setDisplayName] = useState<string>('')
     const [username, setUsername] = useState<string>('')
     const [email, setEmail] = useState<string>('')
+    const [role, setRole] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [confirmPassword, setConfirmPassword] = useState<string>('')
 
@@ -28,12 +31,20 @@ const Signup = () => {
             username: username,
             email: email,
             password: password,
-            confirmPassword
+            confirmPassword: confirmPassword,
+            role: role
         })
     }
 
     useEffect(() => {
+        for (let item in UserRoles) {
+            if (isNaN(Number(item))) {
+                roleList.push(item);
+            }
+        }
+
         setErrors([])
+
         if (!loggedInUser || loggedInUser.role !== UserRoles.admin) {
             triggerUnauthorized()
         }
@@ -50,7 +61,7 @@ const Signup = () => {
                             <div className="form-group">
                                 <label htmlFor="emailLoginField" className="form-label">Email Address</label>
                                 <input
-                                    disabled={isLoading}
+                                    disabled={isAccountLoading}
                                     type="text"
                                     className="form-control"
                                     id="emailLoginField"
@@ -69,7 +80,7 @@ const Signup = () => {
                             <div className="form-group">
                                 <label htmlFor="emailLoginField" className="form-label">Display Name</label>
                                 <input
-                                    disabled={isLoading}
+                                    disabled={isAccountLoading}
                                     type="text"
                                     className="form-control"
                                     id="displayNameLoginField"
@@ -86,9 +97,21 @@ const Signup = () => {
 
                         <div className="row mt-3">
                             <div className="form-group">
+                                <label htmlFor="emailLoginField" className="form-label">User Role</label>
+                                <select className='form-control connectionSelect' onChange={(e) => setRole(e.target.value)}>
+                                    <option disabled selected value="">---Roles---</option>
+                                    {roleList.length > 0 && roleList.map((item: string, key: number) => (
+                                        <option key={key}>{item}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="row mt-3">
+                            <div className="form-group">
                                 <label htmlFor="emailLoginField" className="form-label">Username</label>
                                 <input
-                                    disabled={isLoading}
+                                    disabled={isAccountLoading}
                                     type="text"
                                     className="form-control"
                                     id="usernameLoginField"
@@ -110,7 +133,7 @@ const Signup = () => {
                                 <label htmlFor="passwordLoginField" className="form-label">Password</label>
                                 <div>
                                     <input
-                                        disabled={isLoading}
+                                        disabled={isAccountLoading}
                                         type={showPassword ? 'text' : 'password'}
                                         className="form-control"
                                         id="passwordLoginField"
@@ -131,7 +154,7 @@ const Signup = () => {
                                 <label htmlFor="passwordLoginField" className="form-label">Confirm Password</label>
                                 <div className="d-flex justify-content-center">
                                     <input
-                                        disabled={isLoading}
+                                        disabled={isAccountLoading}
                                         type={showPassword ? 'text' : 'password'}
                                         className="form-control"
                                         id="confirmPasswordLoginField"
@@ -139,7 +162,7 @@ const Signup = () => {
                                         placeholder="Confirm Password..."
                                         onChange={(e) => setConfirmPassword(e.target.value)} />
 
-                                    <button className='btn btn-success' disabled={isLoading}
+                                    <button className='btn btn-success' disabled={isAccountLoading}
                                         onClick={(event: React.FormEvent) => togglePassword(event)}>
                                         <i className={showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
                                     </button>
@@ -153,15 +176,9 @@ const Signup = () => {
                         </div>
 
                         <div className="row">
-                            <div className='passwordHint mt-4' hidden>
-                                <span>
-                                    Hint: Password must contain at least 1 Number, 1 uppercase letter,
-                                    1 special character and length must be longer than 8
-                                </span>
-                            </div>
                             <div className="mt-4 form-group">
-                                <button className='btn btn-success form-control' id="submitButton" type='submit' disabled={isLoading}>
-                                    {!isLoading ? 'Sign Up' : <SpinnerButton />}
+                                <button id="submitButton" type='submit' disabled={isAccountLoading}>
+                                    {!isAccountLoading ? 'Sign Up' : <SpinnerButton />}
                                 </button>
                             </div>
                         </div>

@@ -7,7 +7,7 @@ import Spinner from "../Helpers/Spinner"
 
 const UserManagement = () => {
     const { accountStore } = useStore()
-    const { lockAndUnlock, userList, getAllUsers, isLoading } = accountStore
+    const { lockAndUnlock, userList, getAllUsers, isAccountLoading } = accountStore
 
     useEffect(() => {
         getAllUsers()
@@ -27,7 +27,7 @@ const UserManagement = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {!isLoading ? (
+                        {!isAccountLoading ? (
                             <>
                                 {userList.length > 0 ? userList.map((item: User, key: number) => (
                                     <tr key={key}>

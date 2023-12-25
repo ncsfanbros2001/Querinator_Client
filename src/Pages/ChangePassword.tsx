@@ -14,7 +14,7 @@ const ChangePassword = () => {
     const [showConfirmNewPassword, setShowConfirmNewPassword] = useState<boolean>(false);
 
     const { accountStore } = useStore()
-    const { changeUserPassword, loggedInUser, isLoading, errors, setErrors } = accountStore
+    const { changeUserPassword, loggedInUser, isAccountLoading, errors, setErrors, userToken, triggerUnauthorized } = accountStore
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
@@ -28,6 +28,10 @@ const ChangePassword = () => {
 
     useEffect(() => {
         setErrors([])
+
+        if (!userToken) {
+            triggerUnauthorized()
+        }
     }, [])
 
     return (
@@ -48,7 +52,7 @@ const ChangePassword = () => {
                                 <label htmlFor="oldPassField" className="form-label">Old Password</label>
                                 <div className="d-flex justify-content-center">
                                     <input
-                                        disabled={isLoading}
+                                        disabled={isAccountLoading}
                                         type={showOldPassword ? 'text' : 'password'}
                                         className="form-control"
                                         id="emailLoginField"
@@ -77,7 +81,7 @@ const ChangePassword = () => {
                                 <label htmlFor="newPassField" className="form-label">New Password</label>
                                 <div className="d-flex justify-content-center">
                                     <input
-                                        disabled={isLoading}
+                                        disabled={isAccountLoading}
                                         type={showNewPassword ? 'text' : 'password'}
                                         className="form-control"
                                         id="newPassField"
@@ -108,7 +112,7 @@ const ChangePassword = () => {
                                 <label htmlFor="confirmNewPassField" className="form-label">Confirm new password</label>
                                 <div className="d-flex justify-content-center">
                                     <input
-                                        disabled={isLoading}
+                                        disabled={isAccountLoading}
                                         type={showConfirmNewPassword ? 'text' : 'password'}
                                         className="form-control"
                                         id="confirmNewPassField"
@@ -136,8 +140,8 @@ const ChangePassword = () => {
 
                         <div className="row">
                             <div className="mt-4 form-group">
-                                <button className='btn btn-success form-control' id="submitButton" type='submit' disabled={isLoading}>
-                                    {isLoading ? <SpinnerButton /> : 'Change Password'}
+                                <button id="submitButton" type='submit' disabled={isAccountLoading}>
+                                    {isAccountLoading ? <SpinnerButton /> : 'Change Password'}
                                 </button>
                             </div>
                         </div>

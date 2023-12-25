@@ -3,6 +3,7 @@ import { useStore } from '../Stores/store';
 import { observer } from 'mobx-react-lite';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../Stylesheets/Query_Executer.css'
+import SpinnerButton from '../Helpers/SpinnerButton';
 
 const QueryExecuter = () => {
     const [queryString, setQueryString] = useState<string>("");
@@ -10,9 +11,9 @@ const QueryExecuter = () => {
     const [saveMode, setSaveMode] = useState<boolean>(false);
 
     const { queryStore, accountStore, connectionStore } = useStore()
-    const { executeQuery, saveQuery, isLoading } = queryStore
+    const { executeQuery, saveQuery, isQueryLoading } = queryStore
     const { loggedInUser } = accountStore
-    const { currentServerAndDb, retrieveCurrentServerAndDb } = connectionStore
+    const { currentServerAndDb, getCurrentServerAndDb, isConnectionLoading } = connectionStore
 
     const navigate = useNavigate()
     const param = useParams()
@@ -20,7 +21,7 @@ const QueryExecuter = () => {
     const queryInputField = useRef(null)
 
     useEffect(() => {
-        retrieveCurrentServerAndDb()
+        getCurrentServerAndDb(loggedInUser?.id)
 
         if (param.query != null) {
             const pr = JSON.parse(decodeURIComponent(param.query))
@@ -45,9 +46,11 @@ const QueryExecuter = () => {
                     <h2 className='text-success ml-1'>YOUR QUERY:</h2>
 
                     <div className='connectionStatus'>
-                        <span>
-                            <b>Server:</b> {currentServerAndDb.server} | <b>Database:</b> {currentServerAndDb.database}
-                        </span>
+                        {isConnectionLoading ? (<SpinnerButton />) : (
+                            <span>
+                                <b>Server:</b> {currentServerAndDb.server} | <b>Database:</b> {currentServerAndDb.database}
+                            </span>
+                        )}
                     </div>
 
                 </div>
@@ -56,14 +59,14 @@ const QueryExecuter = () => {
                     className='form-control w-100'
                     style={{ height: 45, marginRight: '10px', paddingLeft: '10px' }}
                     onChange={(e) => setQueryString(e.target.value)}
-                    ref={queryInputField} disabled={saveMode || isLoading}
+                    ref={queryInputField} disabled={saveMode || isQueryLoading}
                     id="queryInput"
                     placeholder='Query goes here ...' />
 
                 <div className="collapse w-75 mt-3" id="saveQueryAccordion">
                     <div className="d-flex justify-content-center">
                         <input type='text' className='form-control w-75' id="queryTitle" placeholder='Your query title...'
-                            onChange={(e) => setQueryTitle(e.target.value)} disabled={isLoading} />
+                            onChange={(e) => setQueryTitle(e.target.value)} disabled={isQueryLoading} />
 
                         <button className='btn btn-primary mx-2 w-25' disabled={queryTitle === ''}
                             onClick={() => saveQuery({ title: queryTitle, query: queryString, userId: loggedInUser?.id })}>
@@ -71,21 +74,22 @@ const QueryExecuter = () => {
                         </button>
                     </div>
                 </div>
-
             </div>
+
+            <div className="barricade m-2" style={{ borderRight: '3px solid gray' }}></div>
 
             <div className='col-3'>
                 <div className='d-flex flex-column align-items-start p-2'>
                     <button
                         className='btn btn-success operateBtn'
-                        disabled={queryString === '' || isLoading}
+                        disabled={queryString === '' || isQueryLoading}
                         onClick={() => execute()}>
                         <i className="bi bi-lightning"></i> Execute
                     </button>
 
                     <button
                         className='btn btn-primary operateBtn'
-                        disabled={queryString === '' || isLoading}
+                        disabled={queryString === '' || isQueryLoading}
                         data-bs-toggle="collapse"
                         data-bs-target="#saveQueryAccordion"
                         onClick={() => setSaveMode(!saveMode)}>
@@ -94,14 +98,14 @@ const QueryExecuter = () => {
 
                     <button
                         className='btn btn-warning operateBtn'
-                        disabled={isLoading}
+                        disabled={isQueryLoading}
                         onClick={() => navigate('/recommend')}>
                         <i className="bi bi-list-columns"></i>  Go To Query Recommedations
                     </button>
 
                     <button
                         className='btn btn-purple operateBtn'
-                        disabled={isLoading}
+                        disabled={isQueryLoading}
                         onClick={() => navigate('/databaseConnection')}>
                         <i className="bi bi-database-gear"></i>  Database Connection
                     </button>

@@ -4,5 +4,5 @@ export enum StaticValues {
 
 export enum UserRoles {
     admin = 'admin',
-    customer = 'customer'
+    user = 'user'
 }

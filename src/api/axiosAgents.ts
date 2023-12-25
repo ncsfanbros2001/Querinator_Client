@@ -104,8 +104,8 @@ const AccountActions = {
 }
 
 const ConnectionActions = {
-    retrieveDatabases: () => {
-        return requests.get('/Connection/databases')
+    retrieveDatabases: (server: string) => {
+        return requests.get(`/Connection/databases/${encodeURIComponent(server)}`)
     },
     retrieveServers: () => {
         return requests.get('/Connection/servers')
@@ -113,8 +113,8 @@ const ConnectionActions = {
     setDbConnection: (connectionInfo: SetConnectionInfo) => {
         return requests.post(`/Connection/setConnection`, connectionInfo)
     },
-    retrieveCurrentServerAndDb: () => {
-        return requests.get(`/Connection/serverAndDb`)
+    retrieveCurrentServerAndDb: (userId: string) => {
+        return requests.get(`/Connection/serverAndDb/${userId}`)
     }
 }
 

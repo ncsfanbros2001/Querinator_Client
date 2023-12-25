@@ -1,12 +1,11 @@
-import { autorun, makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import axiosAgents from "../api/axiosAgents";
 import { SetConnectionInfo } from "../models/SetConnectionInfo";
 import { toast } from "react-toastify";
 import { ServerAndDb } from "../models/ServerAndDb";
-import { StaticValues } from "../utilities/Statics";
 
 export default class ConnectionStore {
-    isLoading: boolean = false;
+    isConnectionLoading: boolean = false;
     servers: string[] = [];
     databases: string[] = [];
     currentServerAndDb: ServerAndDb = {
@@ -19,7 +18,7 @@ export default class ConnectionStore {
     }
 
     setIsLoading = (value: boolean) => {
-        this.isLoading = value
+        this.isConnectionLoading = value
     }
 
     setServers = (value: string[]) => {
@@ -50,18 +49,14 @@ export default class ConnectionStore {
         this.setIsLoading(false)
     }
 
-    retrieveDatabases = async () => {
-        this.setIsLoading(true)
-
-        await axiosAgents.ConnectionActions.retrieveDatabases()
+    retrieveDatabases = async (server: string) => {
+        await axiosAgents.ConnectionActions.retrieveDatabases(server)
             .then(response => {
                 this.setDatabases(response?.result)
             })
             .catch(() => {
                 toast.error("Failed to retrieve default databases")
             })
-
-        this.setIsLoading(false)
     }
 
     setDbConnection = async (connectionInfo: SetConnectionInfo) => {
@@ -73,26 +68,37 @@ export default class ConnectionStore {
                     server: response.result.serverName,
                     database: response.result.databaseName
                 })
-
                 toast.success("Setup connection successfully")
             })
-            .catch(() => {
-                toast.error("Failed to setup connection. Please verify that the name is correct")
+            .catch((error) => {
+                toast.error(error?.response?.data?.errorMessage)
             })
 
         this.setIsLoading(false)
     }
 
-    retrieveCurrentServerAndDb = async () => {
-        await axiosAgents.ConnectionActions.retrieveCurrentServerAndDb()
-            .then(response => {
-                this.setCurrentServerAndDb({
-                    server: response.result.serverName,
-                    database: response.result.databaseName
-                })
+    getCurrentServerAndDb = async (userId: string) => {
+        this.setIsLoading(true)
+
+        await axiosAgents.ConnectionActions.retrieveCurrentServerAndDb(userId)
+            .then((response) => {
+                if (response.result.serverName === null || response.result.databaseName === null) {
+                    this.setCurrentServerAndDb({
+                        server: '(N/A)',
+                        database: '(N/A)'
+                    })
+                }
+                else {
+                    this.setCurrentServerAndDb({
+                        server: response.result.serverName,
+                        database: response.result.databaseName
+                    })
+                }
             })
-            .catch(() => {
-                toast.error("Failed to retrieve current server and database")
+            .catch((error) => {
+                toast.error(error?.response?.data?.errorMessage)
             })
+
+        this.setIsLoading(false)
     }
 } 

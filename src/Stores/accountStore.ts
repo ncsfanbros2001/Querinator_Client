@@ -1,4 +1,4 @@
-import { autorun, makeAutoObservable, reaction } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import { LoginCredentials } from "../models/LoginCredentials";
 import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
@@ -7,13 +7,12 @@ import { StaticValues } from "../utilities/Statics";
 import { RegisterInfo } from "../models/registerInfo";
 import { jwtDecode } from "jwt-decode";
 import { LoginResult } from "../models/LoginResult";
-import { router } from "../Routes";
 import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
 
 export default class AccountStore {
-    isLoading: boolean = false;
+    isAccountLoading: boolean = false;
     userToken: string | null = localStorage.getItem(StaticValues.userToken)
-    loggedInUser: User | null = null
+    loggedInUser: any = null
     errors: string[] = []
     userList: User[] = []
 
@@ -28,10 +27,10 @@ export default class AccountStore {
     }
 
     setIsLoading = (value: boolean) => {
-        this.isLoading = value;
+        this.isAccountLoading = value;
     }
 
-    setLoggedInUser = (value: User | null) => {
+    setLoggedInUser = (value: any) => {
         this.loggedInUser = value;
     }
 
@@ -47,9 +46,18 @@ export default class AccountStore {
         await axiosAgents.AccountActions.login(loginCredentials)
             .then((response: LoginResult) => {
                 localStorage.setItem(StaticValues.userToken, response?.token)
+                this.loggedInUser = jwtDecode(response?.token)
                 this.setIsLoading(false)
 
-                window.location.replace("/")
+                axiosAgents.ConnectionActions.retrieveCurrentServerAndDb(this.loggedInUser?.id)
+                    .then((response) => {
+                        if (response.result.serverName === null || response.result.databaseName === null) {
+                            window.location.replace("/databaseConnection")
+                        }
+                        else {
+                            window.location.replace("/")
+                        }
+                    })
             })
             .catch((error) => {
                 toast.error(error?.response?.data)
@@ -67,7 +75,7 @@ export default class AccountStore {
         await localStorage.removeItem(StaticValues.userToken)
         await this.setLoggedInUser(null)
 
-        router.navigate('/')
+        window.location.replace("/")
     }
 
     register = async (registerInfo: RegisterInfo) => {
@@ -133,7 +141,6 @@ export default class AccountStore {
                 this.setErrors([])
                 this.setIsLoading(false)
 
-                this.setIsLoading(false)
                 toast.success("Change Password Successfully")
             })
             .catch((error) => {
@@ -159,6 +166,16 @@ export default class AccountStore {
         axiosAgents.AccountActions.unauthorized();
     }
 
+    isTokenExpired = () => {
+        if (this.userToken) {
+            const expirationTime = this.loggedInUser?.exp;
 
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            if (currentTime > expirationTime) {
+                this.logout()
+            }
+        }
+    }
 }
 

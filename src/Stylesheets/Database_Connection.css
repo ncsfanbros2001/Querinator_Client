@@ -47,11 +47,22 @@ option {
 
 #setConnection:hover {
     border: 3px solid black !important;
-    transition-duration: 0.1s;
+    transition-duration: 0.2s;
 }
 
 #setConnection:focus,
 #setConnection:active {
     outline: none !important;
     box-shadow: none;
+}
+
+.connectionStatus {
+    color: white;
+    background-color: red;
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    height: 40px;
 }

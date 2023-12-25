@@ -3,6 +3,6 @@ import { HttpStatusCode } from "axios";
 export interface QueryResult {
     isSuccess: boolean,
     result: any,
-    errorMessages: string[],
+    errorMessage: string,
     statusCode: HttpStatusCode
 }

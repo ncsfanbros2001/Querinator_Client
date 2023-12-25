@@ -4,5 +4,6 @@ export interface User {
     email: string,
     userName: string,
     role: string,
-    isLocked: boolean
+    isLocked: boolean,
+    expireDate: any
 }

@@ -13,7 +13,7 @@ const Login = () => {
     const [disabled, setDisabled] = useState<boolean>(false)
 
     const { accountStore } = useStore();
-    const { login, isLoading, loggedInUser } = accountStore;
+    const { login, isAccountLoading, loggedInUser } = accountStore;
 
     const togglePassword = (event: React.FormEvent) => {
         event.preventDefault()
@@ -43,7 +43,7 @@ const Login = () => {
                         <label htmlFor="emailLoginField" className="form-label">Email address</label>
                         <input
                             type='text'
-                            disabled={isLoading || disabled}
+                            disabled={isAccountLoading || disabled}
                             className="form-control"
                             id="emailLoginField"
                             autoComplete='false'
@@ -56,7 +56,7 @@ const Login = () => {
                         <div className="d-flex justify-content-center">
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                disabled={isLoading || disabled}
+                                disabled={isAccountLoading || disabled}
                                 className="form-control"
                                 id="passwordLoginField"
                                 autoComplete='false'
@@ -71,9 +71,9 @@ const Login = () => {
                     </div>
 
                     <div className="mt-4 form-group">
-                        <button className='btn btn-success form-control' id="submitButton" type='submit'
-                            disabled={isLoading || disabled}>
-                            {!isLoading ? 'Log In' : <SpinnerButton />}
+                        <button id="submitButton" type='submit'
+                            disabled={isAccountLoading || disabled}>
+                            {!isAccountLoading ? 'Log In' : <SpinnerButton />}
                         </button>
                     </div>
                 </form>

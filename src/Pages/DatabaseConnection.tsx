@@ -4,11 +4,9 @@ import { useStore } from "../Stores/store";
 import { observer } from "mobx-react-lite";
 import SpinnerButton from "../Helpers/SpinnerButton";
 import { toast } from "react-toastify";
-import { StaticValues } from "../utilities/Statics";
 
 const DatabaseConnection = () => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
-    const [requiresCredentials, setRequiresCredentials] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const [serverName, setServerName] = useState<string>('');
@@ -19,20 +17,22 @@ const DatabaseConnection = () => {
     const usernameField = useRef(null)
     const passwordField = useRef(null)
 
-    const { connectionStore } = useStore();
-    const { setDbConnection, servers, databases, isLoading, retrieveServers, retrieveDatabases,
-        setCurrentServerAndDb } = connectionStore
+    const { connectionStore, accountStore } = useStore();
+    const { setDbConnection, servers, databases, isConnectionLoading, retrieveServers,
+        retrieveDatabases, currentServerAndDb, getCurrentServerAndDb } = connectionStore
+    const { loggedInUser } = accountStore
 
     useEffect(() => {
-        if ((servers.length === 0 || databases.length === 0) && localStorage.getItem(StaticValues.userToken)) {
+        getCurrentServerAndDb(loggedInUser?.id)
+
+        if (servers.length === 0 || databases.length === 0) {
             retrieveServers();
-            retrieveDatabases();
         }
     }, [])
 
     const setConnection = async () => {
         if (isLocked === false) {
-            if ((username === '' || password === '') && requiresCredentials) {
+            if ((username === '' || password === '')) {
                 toast.error("Username and password are required")
             }
             else {
@@ -41,12 +41,7 @@ const DatabaseConnection = () => {
                     databaseName: databaseName,
                     username: username,
                     password: password,
-                    requiresCredentials: requiresCredentials
-                })
-
-                setCurrentServerAndDb({
-                    server: serverName,
-                    database: databaseName
+                    belongsTo: loggedInUser.id
                 })
             }
         }
@@ -58,10 +53,20 @@ const DatabaseConnection = () => {
             <div id='connectionContent'>
                 <h1 className="text-success m-2">DATABASE CONNECTION STRING</h1>
 
+                <div className='connectionStatus m-1'>
+                    {isConnectionLoading ? (<SpinnerButton />) : (
+                        <span>
+                            <b>Server:</b> {currentServerAndDb.server} | <b>Database:</b> {currentServerAndDb.database}
+                        </span>
+                    )}
+                </div>
 
                 <div className="row connectionRow m-3">
                     <select className='form-control connectionSelect' disabled={isLocked}
-                        onChange={(e) => setServerName(e.target.value)}>
+                        onChange={(e) => {
+                            retrieveDatabases(e.target.value);
+                            setServerName(e.target.value);
+                        }}>
 
                         <option disabled selected value="">---Server---</option>
                         {servers.length > 0 && servers.map((item: string, key: number) => (
@@ -86,37 +91,15 @@ const DatabaseConnection = () => {
                     </select>
                 </div>
 
-
-                <div className="form-check form-switch">
-                    <input className="form-check-input" type="checkbox" id="sqlAuthCheckbox" style={{ zoom: 1.4 }}
-                        disabled={serverName === '' || databaseName === ''}
-                        onChange={() => {
-                            if (requiresCredentials === true) {
-                                setUserName('');
-                                setPassword('');
-
-                                (usernameField.current as any).value = '';
-                                (passwordField.current as any).value = '';
-                            }
-                            setRequiresCredentials(!requiresCredentials)
-                        }} />
-
-                    <label className="form-check-label" htmlFor="flexSwitchCheckChecked" style={{ fontSize: '20px' }}>
-                        SQL Server Authentication
-                    </label>
-                </div>
-
-
-
                 <div className="row connectionRow m-3 form-group">
                     <div className="col-6">
-                        <input type="text" className='form-control' disabled={!requiresCredentials} placeholder="Username..."
+                        <input type="text" className='form-control' placeholder="Username..." disabled={isLocked}
                             onChange={(e) => setUserName(e.target.value)} ref={usernameField} />
                     </div>
 
 
                     <div className="col-6 d-flex justify-content-center">
-                        <input type={showPassword ? 'text' : 'password'} className='form-control' disabled={!requiresCredentials}
+                        <input type={showPassword ? 'text' : 'password'} className='form-control' disabled={isLocked}
                             placeholder="Password..." onChange={(e) => setPassword(e.target.value)} ref={passwordField} />
 
                         <button className="btn btn-success mx-2" onClick={() => setShowPassword(!showPassword)}>
@@ -127,9 +110,9 @@ const DatabaseConnection = () => {
 
 
                 <div className="form-group">
-                    <button style={{ backgroundColor: !isLocked ? '#006FCD' : '#107C10' }} disabled={isLoading}
+                    <button style={{ backgroundColor: !isLocked ? '#006FCD' : '#107C10' }} disabled={isConnectionLoading}
                         id="setConnection" onClick={() => setConnection()}>
-                        {!isLoading ? (isLocked ? 'Setup Connection' : 'Save Connection') : <SpinnerButton />}
+                        {!isConnectionLoading ? (isLocked ? 'Setup Connection' : 'Save Connection') : <SpinnerButton />}
                     </button>
                 </div>
             </div>

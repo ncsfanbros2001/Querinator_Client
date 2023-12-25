@@ -3,5 +3,6 @@ export interface RegisterInfo {
     password: string,
     displayName: string,
     confirmPassword: string,
-    username: string
+    username: string,
+    role: string
 }

@@ -62,7 +62,7 @@ const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading }: Prop
                             </div>
                         )) : (
                             <div className="text-center p-2">
-                                <h3>Unable to load Select All queries</h3>
+                                <h3>History unavailable</h3>
                             </div>
                         )}
                     </div>

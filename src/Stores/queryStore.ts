@@ -12,7 +12,7 @@ export default class QueryStore {
     singleSavedQuery: SavedQuery | null = null;
     queryHistory: QueryHistory[] = [];
 
-    isLoading: boolean = false;
+    isQueryLoading: boolean = false;
     tableHidden: boolean = false;
     entireResultHidden: boolean = false;
 
@@ -26,7 +26,7 @@ export default class QueryStore {
     }
 
     setIsLoading = (value: boolean) => {
-        this.isLoading = value
+        this.isQueryLoading = value
     }
 
     setTableHidden = (value: boolean) => {
@@ -93,7 +93,7 @@ export default class QueryStore {
             })
             .catch(error => {
                 if (error?.response?.data) {
-                    toast.error(error?.response?.data?.errorMessages[0])
+                    toast.error(error?.response?.data?.errorMessage)
                 }
             })
 
@@ -111,7 +111,7 @@ export default class QueryStore {
             })
             .catch((error) => {
                 if (error?.response?.data) {
-                    toast.error(error?.response?.data?.errorMessages[0])
+                    toast.error(error?.response?.data?.errorMessage)
                 }
             })
 
@@ -126,7 +126,7 @@ export default class QueryStore {
             })
             .catch((error) => {
                 if (error?.response?.data) {
-                    toast.error(error?.response?.data?.errorMessages[0])
+                    toast.error(error?.response?.data?.errorMessage)
                 }
             })
         this.setIsLoading(false)
@@ -140,7 +140,7 @@ export default class QueryStore {
             })
             .catch((error) => {
                 if (error?.response?.data) {
-                    toast.error(error?.response?.data?.errorMessages[0])
+                    toast.error(error?.response?.data?.errorMessage)
                 }
             })
         this.setIsLoading(false)
@@ -153,7 +153,7 @@ export default class QueryStore {
             })
             .catch((error) => {
                 if (error?.response?.data) {
-                    toast.error(error?.response?.data?.errorMessages[0])
+                    toast.error(error?.response?.data?.errorMessage)
                 }
             })
     }
@@ -166,7 +166,7 @@ export default class QueryStore {
             })
             .catch(error => {
                 if (error?.response?.data) {
-                    toast.error(error?.response?.data?.errorMessages[0])
+                    toast.error(error?.response?.data?.errorMessage)
                 }
             })
 

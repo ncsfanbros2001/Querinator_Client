@@ -7,7 +7,7 @@ import '../Stylesheets/Result_Table.css'
 
 const ResultTable = () => {
     const { queryStore } = useStore()
-    const { queryResult, isLoading, columnNames, tableHidden, entireResultHidden } = queryStore
+    const { queryResult, isQueryLoading, columnNames, tableHidden, entireResultHidden } = queryStore
 
     const csvReport = {
         filename: 'Report.csv',
@@ -17,7 +17,7 @@ const ResultTable = () => {
 
     return (
         <div>
-            {isLoading === false ? (<div>
+            {isQueryLoading === false ? (<div>
                 {queryResult !== undefined && entireResultHidden === false && (
                     <div>
                         <h1 className='text-success mt-5 text-center'>RESULT</h1>
@@ -36,11 +36,7 @@ const ResultTable = () => {
                                     <>
                                         <h3>Errors: </h3>
                                         <ul>
-                                            {queryResult?.errorMessages?.map((item: any, key: number) => {
-                                                return (
-                                                    <li key={key}>{item}</li>
-                                                )
-                                            })}
+                                            {queryResult?.errorMessage}
                                         </ul>
                                     </>
                                 )}
