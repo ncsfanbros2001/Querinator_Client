@@ -2,19 +2,18 @@ import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
 import '../Stylesheets/Accordion.css'
 import { QueryHistory } from '../models/QueryHistory'
-import { useStore } from '../Stores/store'
+import Spinner from '../Helpers/Spinner'
 
 interface Props {
     queryHistory: QueryHistory[]
     queryGroupName: string
     isLoading: boolean
+    loggedInUser: any
+    executeQuery: any
 }
 
-const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading }: Props) => {
+const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading, loggedInUser, executeQuery }: Props) => {
     const navigate = useNavigate();
-    const { queryStore, accountStore } = useStore()
-    const { executeQuery } = queryStore
-    const { loggedInUser } = accountStore
 
     const execute = (query: string) => {
         executeQuery({
@@ -47,7 +46,7 @@ const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading }: Prop
                     </h2>
 
                     <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse accordionContainer">
-                        {queryHistory.length > 0 ? queryHistory.map((item: QueryHistory, key: number) => (
+                        {queryHistory.length > 0 && !isLoading ? queryHistory.map((item: QueryHistory, key: number) => (
                             <div className="accordion-body d-flex flex-row justify-content-between" key={key}>
                                 <div style={{ width: '80%' }} className="p-1">
                                     <h5 className="queryTitle">{item.query}</h5>
@@ -60,9 +59,13 @@ const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading }: Prop
                                     </button>
                                 </div>
                             </div>
-                        )) : (
+                        )) : queryHistory.length > 0 && !isLoading ? (
                             <div className="text-center p-2">
                                 <h3>History unavailable</h3>
+                            </div>
+                        ) : (
+                            <div className="text-center p-2">
+                                <Spinner />
                             </div>
                         )}
                     </div>

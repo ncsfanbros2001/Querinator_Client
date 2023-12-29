@@ -21,7 +21,7 @@ const QueryExecuter = () => {
     const queryInputField = useRef(null)
 
     useEffect(() => {
-        getCurrentServerAndDb(loggedInUser?.id)
+        getCurrentServerAndDb(loggedInUser!.id)
 
         if (param.query != null) {
             const pr = JSON.parse(decodeURIComponent(param.query))

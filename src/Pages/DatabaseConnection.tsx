@@ -23,7 +23,7 @@ const DatabaseConnection = () => {
     const { loggedInUser } = accountStore
 
     useEffect(() => {
-        getCurrentServerAndDb(loggedInUser?.id)
+        getCurrentServerAndDb(loggedInUser!.id)
 
         if (servers.length === 0 || databases.length === 0) {
             retrieveServers();
@@ -41,7 +41,7 @@ const DatabaseConnection = () => {
                     databaseName: databaseName,
                     username: username,
                     password: password,
-                    belongsTo: loggedInUser.id
+                    belongsTo: loggedInUser!.id
                 })
             }
         }

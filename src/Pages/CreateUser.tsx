@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import SpinnerButton from '../Helpers/SpinnerButton';
 import { UserRoles } from '../utilities/Statics';
 
-const Signup = () => {
+const CreateUser = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const { accountStore } = useStore()
     const { isAccountLoading, register, triggerUnauthorized, loggedInUser, errors, setErrors } = accountStore
@@ -54,7 +54,7 @@ const Signup = () => {
         <div id='registerContainr'>
             <div id='content'>
                 <form className='formContainerSignup' onSubmit={handleSubmit}>
-                    <h1 className='text-center text-success mb-4'>REGISTER</h1>
+                    <h1 className='text-center text-success mb-4'>CREATE NEW USER</h1>
 
                     <div className="container">
                         <div className="row mt-2">
@@ -178,7 +178,7 @@ const Signup = () => {
                         <div className="row">
                             <div className="mt-4 form-group">
                                 <button id="submitButton" type='submit' disabled={isAccountLoading}>
-                                    {!isAccountLoading ? 'Sign Up' : <SpinnerButton />}
+                                    {!isAccountLoading ? 'Create' : <SpinnerButton />}
                                 </button>
                             </div>
                         </div>
@@ -189,4 +189,4 @@ const Signup = () => {
     )
 }
 
-export default observer(Signup)   
+export default observer(CreateUser)   

@@ -11,8 +11,5 @@
 
 .function-button {
     width: 30%;
-}
-
-.queryTitle {
-    user-select: none;
+    height: 40px;
 }

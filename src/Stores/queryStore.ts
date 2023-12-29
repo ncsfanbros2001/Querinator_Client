@@ -37,7 +37,7 @@ export default class QueryStore {
         this.queryResult = value
     }
 
-    setQueryRecommendations = (savedQueries: SavedQuery[]) => {
+    setSavedQueries = (savedQueries: SavedQuery[]) => {
         const queryToPush: SavedQuery[] = []
         savedQueries.forEach((item) => queryToPush.push(item))
 
@@ -107,7 +107,7 @@ export default class QueryStore {
 
         await axiosAgents.QueryActions.getSavedQueries(userId)
             .then((response) => {
-                this.setQueryRecommendations(response?.result)
+                this.setSavedQueries(response?.result)
             })
             .catch((error) => {
                 if (error?.response?.data) {
@@ -118,10 +118,11 @@ export default class QueryStore {
         this.setIsLoading(false)
     }
 
-    updateSavedQuery = async (queryId: string, newUpdatedQuery: SavedQuery) => {
+    updateSavedQuery = async (queryId: string, newUpdatedQuery: SavedQuery, userId: string) => {
         this.setIsLoading(true)
         await axiosAgents.QueryActions.updateSavedQuery(queryId, newUpdatedQuery)
             .then(() => {
+                this.loadSavedQueries(userId)
                 toast.success("Update query successfully")
             })
             .catch((error) => {
@@ -132,10 +133,11 @@ export default class QueryStore {
         this.setIsLoading(false)
     }
 
-    deleteSavedQuery = async (queryId: string) => {
+    deleteSavedQuery = async (queryId: string, userId: string) => {
         this.setIsLoading(true)
         await axiosAgents.QueryActions.deleteSavedQuery(queryId)
             .then(() => {
+                this.loadSavedQueries(userId)
                 toast.success("Deleted successfully")
             })
             .catch((error) => {

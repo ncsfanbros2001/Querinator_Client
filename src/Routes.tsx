@@ -4,7 +4,7 @@ import QueryFunction from "./Pages/QueryFunction";
 import App from "./App";
 import Login from "./Pages/Login";
 import MainMenu from "./Pages/MainMenu";
-import Signup from "./Pages/Signup";
+import CreateUser from "./Pages/CreateUser";
 import Unauthorized from "./Components/Unauthorized";
 import DatabaseConnection from "./Pages/DatabaseConnection";
 import UserManagement from "./Pages/UserManagement";
@@ -19,7 +19,7 @@ export const routes: RouteObject[] = [
             { path: '/query/:query?', element: <QueryFunction /> },
             { path: '/recommend', element: <QueryRecommendations /> },
             { path: '/login', element: <Login /> },
-            { path: '/signup', element: <Signup /> },
+            { path: '/createUser', element: <CreateUser /> },
             { path: '/unauthorized', element: <Unauthorized /> },
             { path: '/databaseConnection', element: <DatabaseConnection /> },
             { path: '/userManagement', element: <UserManagement /> },

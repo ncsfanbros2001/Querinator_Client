@@ -87,7 +87,9 @@ const ResultTable = () => {
                     </div>
                 )}
             </div>) : (
-                <Spinner />
+                <div className='mt-3'>
+                    <Spinner />
+                </div>
             )}
         </div>
     )

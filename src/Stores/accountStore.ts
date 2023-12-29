@@ -12,7 +12,7 @@ import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
 export default class AccountStore {
     isAccountLoading: boolean = false;
     userToken: string | null = localStorage.getItem(StaticValues.userToken)
-    loggedInUser: any = null
+    loggedInUser: User | null = null
     errors: string[] = []
     userList: User[] = []
 
@@ -49,7 +49,7 @@ export default class AccountStore {
                 this.loggedInUser = jwtDecode(response?.token)
                 this.setIsLoading(false)
 
-                axiosAgents.ConnectionActions.retrieveCurrentServerAndDb(this.loggedInUser?.id)
+                axiosAgents.ConnectionActions.retrieveCurrentServerAndDb(this.loggedInUser!.id)
                     .then((response) => {
                         if (response.result.serverName === null || response.result.databaseName === null) {
                             window.location.replace("/databaseConnection")
@@ -168,7 +168,7 @@ export default class AccountStore {
 
     isTokenExpired = () => {
         if (this.userToken) {
-            const expirationTime = this.loggedInUser?.exp;
+            const expirationTime = this.loggedInUser?.expireDate;
 
             const currentTime = Math.floor(Date.now() / 1000);
 

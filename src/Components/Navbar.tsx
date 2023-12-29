@@ -50,12 +50,12 @@ const Navbar = () => {
                                 <li>
                                     {loggedInUser?.role === UserRoles.admin && (
                                         <>
-                                            <button className="dropdown-item" type="button" onClick={() => navigate('/signup')}>
+                                            <button className="dropdown-item" type="button" onClick={() => navigate('/createUser')}>
                                                 <i className="bi bi-person-add"></i>  <b>Add Account</b>
                                             </button>
 
                                             <button className="dropdown-item" type="button" onClick={() => navigate('/userManagement')}>
-                                                <i className="bi bi-people"></i> <b>Manage Users</b>
+                                                <i className="bi bi-people"></i>  <b>Manage Users</b>
                                             </button>
                                             <hr className="dropdown-divider" />
                                         </>
