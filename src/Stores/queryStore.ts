@@ -4,6 +4,9 @@ import { toast } from "react-toastify";
 import { SavedQuery } from "../models/SavedQuery";
 import { QueryResult } from "../models/QueryResult";
 import { QueryHistory } from "../models/QueryHistory";
+import { ExecuteQueryDTO } from "../DTOs/ExecuteQueryDTO";
+import { SaveQueryDTO } from "../DTOs/SaveQueryDTO";
+import { UpdateQueryDTO } from "../DTOs/UpdateQueryDTO";
 
 export default class QueryStore {
     queryResult: QueryResult | undefined = undefined;
@@ -60,7 +63,7 @@ export default class QueryStore {
         this.singleSavedQuery = null
     }
 
-    executeQuery = async (queryHistory: QueryHistory) => {
+    executeQuery = async (queryHistory: ExecuteQueryDTO) => {
         this.setIsLoading(true)
 
         await axiosAgents.QueryActions.queryResults(queryHistory)
@@ -85,7 +88,7 @@ export default class QueryStore {
         this.setIsLoading(false)
     }
 
-    saveQuery = async (queryToSave: any) => {
+    saveQuery = async (queryToSave: SaveQueryDTO) => {
         this.setIsLoading(true)
         await axiosAgents.QueryActions.saveQuery(queryToSave)
             .then(() => {
@@ -118,7 +121,7 @@ export default class QueryStore {
         this.setIsLoading(false)
     }
 
-    updateSavedQuery = async (queryId: string, newUpdatedQuery: SavedQuery, userId: string) => {
+    updateSavedQuery = async (queryId: string, newUpdatedQuery: UpdateQueryDTO, userId: string) => {
         this.setIsLoading(true)
         await axiosAgents.QueryActions.updateSavedQuery(queryId, newUpdatedQuery)
             .then(() => {

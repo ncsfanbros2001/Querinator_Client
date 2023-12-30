@@ -41,10 +41,7 @@ const UpdateModal = ({ queryId, updateMode, setUpdateMode }: Props) => {
     const updateQuery = async () => {
         await updateSavedQuery(queryId, {
             title: titleUpdateValues,
-            query: queryUpdateValues,
-            server: null,
-            database: null,
-            userId: loggedInUser?.id!
+            query: queryUpdateValues
         }, loggedInUser?.id!)
 
         setUpdateMode(false)

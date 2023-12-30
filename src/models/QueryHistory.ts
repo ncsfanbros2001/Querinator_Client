@@ -1,5 +1,7 @@
 export interface QueryHistory {
+    title?: string | null,
     query: string,
-    role: string,
-    userId: string
+    userId: string,
+    server?: string | null,
+    database?: string | null,
 }

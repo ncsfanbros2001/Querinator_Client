@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import axiosAgents from "../api/axiosAgents";
-import { SetConnectionInfo } from "../models/SetConnectionInfo";
+import { SetConnectionDTO } from "../DTOs/SetConnectionDTO";
 import { toast } from "react-toastify";
 import { ServerAndDb } from "../models/ServerAndDb";
 
@@ -59,7 +59,7 @@ export default class ConnectionStore {
             })
     }
 
-    setDbConnection = async (connectionInfo: SetConnectionInfo) => {
+    setDbConnection = async (connectionInfo: SetConnectionDTO) => {
         this.setIsLoading(true)
 
         await axiosAgents.ConnectionActions.setDbConnection(connectionInfo)

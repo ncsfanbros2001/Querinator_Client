@@ -1,11 +1,12 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { SavedQuery } from "../models/SavedQuery";
-import { LoginCredentials } from "../models/LoginCredentials";
-import { RegisterInfo } from "../models/registerInfo"
+import { LoginDTO } from "../DTOs/LoginDTO";
+import { RegisterDTO } from "../DTOs/RegisterDTO"
 import { store } from '../Stores/store'
-import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
-import { SetConnectionInfo } from "../models/SetConnectionInfo";
+import { ChangePasswordDTO } from "../DTOs/ChangePasswordDTO";
+import { SetConnectionDTO } from "../DTOs/SetConnectionDTO";
 import { QueryHistory } from "../models/QueryHistory";
+import { SaveQueryDTO } from "../DTOs/SaveQueryDTO";
+import { UpdateQueryDTO } from "../DTOs/UpdateQueryDTO";
 
 axios.defaults.baseURL = 'https://localhost:5100/api'
 
@@ -62,7 +63,7 @@ const QueryActions = {
     queryResults: (queryHistory: QueryHistory) => {
         return requests.post(`/Query/executeQuery`, queryHistory);
     },
-    saveQuery: (queryToSave: SavedQuery) => {
+    saveQuery: (queryToSave: SaveQueryDTO) => {
         return requests.post(`/Query`, queryToSave);
     },
     getSavedQueries: (userId: string) => {
@@ -71,7 +72,7 @@ const QueryActions = {
     deleteSavedQuery: (queryToDeleteId: string) => {
         return requests.delete(`/Query/${queryToDeleteId}`);
     },
-    updateSavedQuery: (queryToUpdateId: string, updateInfo: SavedQuery) => {
+    updateSavedQuery: (queryToUpdateId: string, updateInfo: UpdateQueryDTO) => {
         return requests.put(`/Query/${queryToUpdateId}`, updateInfo);
     },
     getOneSavedQuery: (queryId: string) => {
@@ -83,10 +84,10 @@ const QueryActions = {
 }
 
 const AccountActions = {
-    login: (credentials: LoginCredentials) => {
+    login: (credentials: LoginDTO) => {
         return requests.post(`/Account/login`, credentials)
     },
-    register: (registerInfo: RegisterInfo) => {
+    register: (registerInfo: RegisterDTO) => {
         return requests.post(`/Account/register`, registerInfo)
     },
     unauthorized: () => {
@@ -98,7 +99,7 @@ const AccountActions = {
     getUsers: () => {
         return requests.get(`Account/getUsers`)
     },
-    changePassword: (changePasswordInfo: ChangePasswordInfo) => {
+    changePassword: (changePasswordInfo: ChangePasswordDTO) => {
         return requests.put(`Account/changePassword`, changePasswordInfo)
     }
 }
@@ -110,7 +111,7 @@ const ConnectionActions = {
     retrieveServers: () => {
         return requests.get('/Connection/servers')
     },
-    setDbConnection: (connectionInfo: SetConnectionInfo) => {
+    setDbConnection: (connectionInfo: SetConnectionDTO) => {
         return requests.post(`/Connection/setConnection`, connectionInfo)
     },
     retrieveCurrentServerAndDb: (userId: string) => {

@@ -1,13 +1,13 @@
 import { autorun, makeAutoObservable } from "mobx";
-import { LoginCredentials } from "../models/LoginCredentials";
+import { LoginDTO } from "../DTOs/LoginDTO";
 import axiosAgents from "../api/axiosAgents";
 import { toast } from "react-toastify";
 import { User } from "../models/User";
 import { StaticValues } from "../utilities/Statics";
-import { RegisterInfo } from "../models/registerInfo";
+import { RegisterDTO } from "../DTOs/RegisterDTO";
 import { jwtDecode } from "jwt-decode";
 import { LoginResult } from "../models/LoginResult";
-import { ChangePasswordInfo } from "../models/ChangePasswordInfo";
+import { ChangePasswordDTO } from "../DTOs/ChangePasswordDTO";
 
 export default class AccountStore {
     isAccountLoading: boolean = false;
@@ -38,7 +38,7 @@ export default class AccountStore {
         this.userList = value;
     }
 
-    login = async (loginCredentials: LoginCredentials) => {
+    login = async (loginCredentials: LoginDTO) => {
         this.setIsLoading(true)
 
         localStorage.removeItem(StaticValues.userToken)
@@ -78,7 +78,7 @@ export default class AccountStore {
         window.location.replace("/")
     }
 
-    register = async (registerInfo: RegisterInfo) => {
+    register = async (registerInfo: RegisterDTO) => {
         this.setIsLoading(true)
         this.setErrors([])
 
@@ -132,7 +132,7 @@ export default class AccountStore {
         this.setIsLoading(false)
     }
 
-    changeUserPassword = async (changePasswordInfo: ChangePasswordInfo) => {
+    changeUserPassword = async (changePasswordInfo: ChangePasswordDTO) => {
         this.setIsLoading(true)
         this.setErrors([])
 

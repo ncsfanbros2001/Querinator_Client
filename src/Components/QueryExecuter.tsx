@@ -33,7 +33,6 @@ const QueryExecuter = () => {
     const execute = () => {
         executeQuery({
             query: queryString,
-            role: loggedInUser?.role!,
             userId: loggedInUser?.id!
         })
     }
@@ -69,7 +68,7 @@ const QueryExecuter = () => {
                             onChange={(e) => setQueryTitle(e.target.value)} disabled={isQueryLoading} />
 
                         <button className='btn btn-primary mx-2 w-25' disabled={queryTitle === ''}
-                            onClick={() => saveQuery({ title: queryTitle, query: queryString, userId: loggedInUser?.id })}>
+                            onClick={() => saveQuery({ title: queryTitle, query: queryString, userId: loggedInUser!.id })}>
                             Save
                         </button>
                     </div>

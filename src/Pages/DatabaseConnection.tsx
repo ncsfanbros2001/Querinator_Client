@@ -41,7 +41,7 @@ const DatabaseConnection = () => {
                     databaseName: databaseName,
                     username: username,
                     password: password,
-                    belongsTo: loggedInUser!.id
+                    userId: loggedInUser!.id
                 })
             }
         }
