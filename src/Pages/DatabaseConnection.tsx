@@ -32,7 +32,7 @@ const DatabaseConnection = () => {
 
     const setConnection = async () => {
         if (isLocked === false) {
-            if ((username === '' || password === '')) {
+            if (username === '' || password === '') {
                 toast.error("Username and password are required")
             }
             else {
@@ -41,7 +41,7 @@ const DatabaseConnection = () => {
                     databaseName: databaseName,
                     username: username,
                     password: password,
-                    userId: loggedInUser!.id
+                    belongsTo: loggedInUser!.id
                 })
             }
         }

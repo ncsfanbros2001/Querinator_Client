@@ -70,8 +70,9 @@ export default class ConnectionStore {
                 })
                 toast.success("Setup connection successfully")
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 toast.error(error?.response?.data?.errorMessage)
+                console.log(error)
             })
 
         this.setIsLoading(false)

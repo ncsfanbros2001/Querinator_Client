@@ -121,14 +121,15 @@ export default class QueryStore {
         this.setIsLoading(false)
     }
 
-    updateSavedQuery = async (queryId: string, newUpdatedQuery: UpdateQueryDTO, userId: string) => {
+    updateSavedQuery = async (userId: string, newUpdatedQuery: UpdateQueryDTO) => {
         this.setIsLoading(true)
-        await axiosAgents.QueryActions.updateSavedQuery(queryId, newUpdatedQuery)
+        await axiosAgents.QueryActions.updateSavedQuery(userId, newUpdatedQuery)
             .then(() => {
                 this.loadSavedQueries(userId)
                 toast.success("Update query successfully")
             })
             .catch((error) => {
+                console.log(error)
                 if (error?.response?.data) {
                     toast.error(error?.response?.data?.errorMessage)
                 }

@@ -72,8 +72,8 @@ const QueryActions = {
     deleteSavedQuery: (queryToDeleteId: string) => {
         return requests.delete(`/Query/${queryToDeleteId}`);
     },
-    updateSavedQuery: (queryToUpdateId: string, updateInfo: UpdateQueryDTO) => {
-        return requests.put(`/Query/${queryToUpdateId}`, updateInfo);
+    updateSavedQuery: (userId: string, updateInfo: UpdateQueryDTO) => {
+        return requests.put(`/Query/${userId}`, updateInfo);
     },
     getOneSavedQuery: (queryId: string) => {
         return requests.get(`/Query/${queryId}`);
@@ -112,7 +112,7 @@ const ConnectionActions = {
         return requests.get('/Connection/servers')
     },
     setDbConnection: (connectionInfo: SetConnectionDTO) => {
-        return requests.post(`/Connection/setConnection`, connectionInfo)
+        return requests.post('/Connection/setConnection', connectionInfo)
     },
     retrieveCurrentServerAndDb: (userId: string) => {
         return requests.get(`/Connection/serverAndDb/${userId}`)

@@ -38,6 +38,10 @@ export default class AccountStore {
         this.userList = value;
     }
 
+    setErrors = (errors: string[]) => {
+        this.errors = errors
+    }
+
     login = async (loginCredentials: LoginDTO) => {
         this.setIsLoading(true)
 
@@ -65,10 +69,6 @@ export default class AccountStore {
                 this.setIsLoading(false)
             })
 
-    }
-
-    setErrors = (errors: string[]) => {
-        this.errors = errors
     }
 
     logout = async () => {

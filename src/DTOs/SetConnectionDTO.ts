@@ -3,5 +3,5 @@ export interface SetConnectionDTO {
     databaseName: string,
     username: string,
     password: string,
-    userId: string
+    belongsTo: string
 }

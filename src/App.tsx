@@ -16,7 +16,7 @@ const App = () => {
     return (
         <div>
             <Navbar />
-            <ToastContainer position="bottom-right" theme="colored" />
+            <ToastContainer position="bottom-right" theme="colored" autoClose={1500} />
             <Outlet />
         </div>
     )
