@@ -12,7 +12,7 @@ const MainMenu = () => {
     return (
         <div id='containr'>
             <div id='content'>
-                <h1 className='text-light'>QUERINATOR</h1>
+                <h1 className='title'>QUERINATOR</h1>
                 {loggedInUser && (<p className='welcomeMessage'>Hello There, {loggedInUser.displayName} !</p>)}
 
                 {localStorage.getItem(StaticValues.userToken) ? (

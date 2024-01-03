@@ -1,8 +1,8 @@
+import '../Stylesheets/Query_Executer.css'
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from '../Stores/store';
 import { observer } from 'mobx-react-lite';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../Stylesheets/Query_Executer.css'
 import SpinnerButton from '../Helpers/SpinnerButton';
 
 const QueryExecuter = () => {
@@ -38,31 +38,31 @@ const QueryExecuter = () => {
     }
 
     return (
-        <div className='d-flex justify-content-center mx-5'>
-            <div className='form-group col-9 mt-3'>
+        <div className='d-flex justify-content-center' id="queryExecuterContainter">
+            <div className='form-group mt-3' id="inputRegion">
 
-                <div className='d-flex justify-content-between mx-1'>
+                <div className='d-flex justify-content-between mx-1 header'>
                     <h2 className='text-success ml-1'>YOUR QUERY:</h2>
 
                     <div className='connectionStatus'>
                         {isConnectionLoading ? (<SpinnerButton />) : (
                             <span>
-                                <b>Server:</b> {currentServerAndDb.server} | <b>Database:</b> {currentServerAndDb.database}
+                                <b>Server:</b> {currentServerAndDb.server} <b>Database:</b> {currentServerAndDb.database}
                             </span>
                         )}
                     </div>
 
                 </div>
 
-                <input type='text'
-                    className='form-control w-100'
-                    style={{ height: 45, marginRight: '10px', paddingLeft: '10px' }}
+                <input
+                    type='text'
+                    className='form-control'
                     onChange={(e) => setQueryString(e.target.value)}
                     ref={queryInputField} disabled={saveMode || isQueryLoading}
                     id="queryInput"
                     placeholder='Query goes here ...' />
 
-                <div className="collapse w-75 mt-3" id="saveQueryAccordion">
+                <div className="collapse" id="saveQueryAccordion">
                     <div className="d-flex justify-content-center">
                         <input type='text' className='form-control w-75' id="queryTitle" placeholder='Your query title...'
                             onChange={(e) => setQueryTitle(e.target.value)} disabled={isQueryLoading} />
@@ -75,10 +75,10 @@ const QueryExecuter = () => {
                 </div>
             </div>
 
-            <div className="barricade m-2" style={{ borderRight: '3px solid gray' }}></div>
+            <div className="barricade"></div>
 
-            <div className='col-3'>
-                <div className='d-flex flex-column align-items-start p-2'>
+            <div className='col-md-3 col-sm-12'>
+                <div id="btnRegion">
                     <button
                         className='btn btn-success operateBtn'
                         disabled={queryString === '' || isQueryLoading}

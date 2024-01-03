@@ -1,3 +1,7 @@
+#queryExecuterContainter {
+    margin: 0px 80px;
+}
+
 #queryTitle:focus,
 #queryInput:focus {
     outline: none;
@@ -28,9 +32,74 @@
     color: white;
     background-color: red;
     border-radius: 10px;
-    padding: 8px;
+    padding: 10px;
     display: flex;
     align-items: center;
     user-select: none;
     height: 40px;
+}
+
+.barricade {
+    border-right: 3px solid gray;
+    margin-left: 8px;
+}
+
+#btnRegion {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 5px;
+}
+
+#queryInput {
+    height: 45px;
+    margin-right: 10px;
+    padding-left: 10px;
+}
+
+#saveQueryAccordion {
+    width: 75%;
+    margin-top: 15px;
+}
+
+#inputRegion {
+    width: 70%;
+}
+
+@media screen and (max-width: 576px) {
+    #queryExecuterContainter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+    }
+
+    .barricade {
+        border-right: none;
+        border-bottom: 3px solid gray;
+        margin-top: 10px;
+        width: 80%;
+    }
+
+    #btnRegion {
+        align-items: center;
+    }
+
+    #saveQueryAccordion {
+        width: 100%;
+    }
+
+    #inputRegion {
+        width: 90%;
+        margin: 0;
+    }
+
+    .connectionStatus {
+        width: 50%;
+        font-size: 15px;
+    }
+
+    #queryInput {
+        margin-top: 10px;
+    }
 }

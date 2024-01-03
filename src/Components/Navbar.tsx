@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { StaticValues, UserRoles } from '../utilities/Statics';
 import { useStore } from '../Stores/store';
 import { observer } from 'mobx-react-lite';
+import '../Stylesheets/Navbar.css'
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -10,17 +11,17 @@ const Navbar = () => {
     const { logout, loggedInUser } = accountStore
 
     return (
-        <>
-            <nav className="navbar navbar-expand navbar-dark bg-dark p-2">
-                <NavLink to='/' className="navbar-brand" style={{ fontFamily: "Times New Roman, Times, serif" }}>
+        <div>
+            <nav className="navbar navbar-expand navbar-dark bg-dark p-2" id="navControl">
+                <NavLink to='/' className="navbar-brand" style={{ fontFamily: "Times New Roman, Times, serif" }} id="titleControl">
                     QUERINATOR
                 </NavLink>
 
 
-                <div className="collapse navbar-collapse" id="navbarsExample02">
+                <div className="navbar-collapse">
                     {localStorage.getItem(StaticValues.userToken) && (
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
+                        <ul className="navbar-nav mr-auto" id="navItemControl">
+                            <li className="nav-item">
                                 <NavLink to='/query' className="nav-link">Query</NavLink>
                             </li>
                             <li className="nav-item">
@@ -57,6 +58,7 @@ const Navbar = () => {
                                             <button className="dropdown-item" type="button" onClick={() => navigate('/userManagement')}>
                                                 <i className="bi bi-people"></i>  <b>Manage Users</b>
                                             </button>
+
                                             <hr className="dropdown-divider" />
                                         </>
                                     )}
@@ -76,7 +78,7 @@ const Navbar = () => {
                     </>
                 )}
             </nav>
-        </>
+        </div>
     )
 }
 

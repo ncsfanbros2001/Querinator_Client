@@ -3,15 +3,19 @@ import SavedQueryAccordion from "../Components/SavedQueryAccordion"
 import { useStore } from "../Stores/store"
 import { observer } from "mobx-react-lite"
 import QueryHistoryAccordion from "../Components/QueryHistoryAccordion"
+import '../Stylesheets/Query_Recommendations.css'
 
 const QueryRecommendations = () => {
 
-    const { queryStore, accountStore } = useStore()
+    const { queryStore, accountStore, connectionStore } = useStore()
     const { loadSavedQueries, savedQueries, setSavedQueries, isQueryLoading, getQueryHistory, queryHistory, executeQuery,
-        deleteSavedQuery } = queryStore
+        deleteSavedQuery, } = queryStore
     const { loggedInUser } = accountStore
+    const { currentServerAndDb, getCurrentServerAndDb } = connectionStore
 
     useEffect(() => {
+        getCurrentServerAndDb(loggedInUser!.id)
+
         loadSavedQueries(loggedInUser?.id!)
         getQueryHistory(loggedInUser?.id!)
     }, [])
@@ -19,15 +23,23 @@ const QueryRecommendations = () => {
     return (
         <>
             <div className='py-md-1'>
-                <h1 className="my-5 text-center text-success">Query Recommendations</h1>
+                <h1 className="mt-5 text-center text-success titleText">Query Recommendations</h1>
 
-                <div className="container">
+                <div className="d-flex justify-content-center">
+                    <div className='connectionStatus w-md-50'>
+                        <span>
+                            <b>Server:</b> {currentServerAndDb.server} <b>Database:</b> {currentServerAndDb.database}
+                        </span>
+                    </div>
+                </div>
+
+                <div className="accordionRegion">
                     <SavedQueryAccordion savedQueries={savedQueries} queryGroupName={"Saved Queries"} isLoading={isQueryLoading}
                         loggedInUser={loggedInUser} executeQuery={executeQuery} deleteSavedQuery={deleteSavedQuery}
                         setSavedQueries={setSavedQueries} />
                 </div>
 
-                <div className="container">
+                <div className="accordionRegion">
                     <QueryHistoryAccordion queryHistory={queryHistory} queryGroupName={"Query History"} isLoading={isQueryLoading}
                         executeQuery={executeQuery} loggedInUser={loggedInUser} />
                 </div>

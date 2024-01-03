@@ -22,10 +22,7 @@ const ResultTable = () => {
                     <div>
                         <h1 className='text-success mt-5 text-center'>RESULT</h1>
                         <div className='d-flex justify-content-center p-2'>
-                            <div className='w-50 p-2' style={{
-                                backgroundColor: '#F5F5F5', borderRadius: 10,
-                                border: '2px solid #696969'
-                            }}>
+                            <div className='resultRegion'>
                                 <h3>Query Status:
                                     <span className={queryResult?.isSuccess === true ? 'text-success' : 'text-danger'}>
                                         {queryResult?.isSuccess === true ? (' Success') : (' Failed')}

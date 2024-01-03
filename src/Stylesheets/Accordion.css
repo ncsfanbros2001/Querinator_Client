@@ -11,5 +11,9 @@
 
 .function-button {
     width: 30%;
-    height: 40px;
+    height: 45px;
+}
+
+.accordionRegion {
+    width: 100%;
 }
