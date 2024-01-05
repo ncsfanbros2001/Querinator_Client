@@ -129,7 +129,7 @@ const CreateUser = () => {
                         </div>
 
                         <div className="row mt-3">
-                            <div className="form-group col-6">
+                            <div className="form-group col-md-6">
                                 <label htmlFor="passwordLoginField" className="form-label">Password</label>
                                 <div>
                                     <input
@@ -150,7 +150,7 @@ const CreateUser = () => {
                             </div>
 
 
-                            <div className="form-group col-6">
+                            <div className="form-group col-md-6 confirmRegion">
                                 <label htmlFor="passwordLoginField" className="form-label">Confirm Password</label>
                                 <div className="d-flex justify-content-center">
                                     <input

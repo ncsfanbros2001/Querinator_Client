@@ -2,8 +2,28 @@
     font-size: 50px;
 }
 
+.accordionRegion {
+    width: 90%;
+}
+
+.connectionStatusQR {
+    color: white;
+    background-color: red;
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    height: 40px;
+    text-align: center;
+}
+
 @media screen and (max-width: 576px) {
     .titleText {
         font-size: 35px;
+    }
+
+    .accordionRegion {
+        width: 120%;
     }
 }

@@ -17,3 +17,23 @@
 .accordionRegion {
     width: 100%;
 }
+
+#buttonRegion {
+    display: flex;
+    justify-content: space-evenly;
+    width: 15%;
+}
+
+@media screen and (max-width: 576px) {
+    #buttonRegion {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+    }
+
+    .function-button {
+        width: 80%;
+        height: 35px;
+        margin: 3px;
+    }
+}

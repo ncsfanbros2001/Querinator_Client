@@ -9,6 +9,7 @@ import Unauthorized from "./Components/Unauthorized";
 import DatabaseConnection from "./Pages/DatabaseConnection";
 import UserManagement from "./Pages/UserManagement";
 import ChangePassword from "./Pages/ChangePassword";
+import MyCombobox from "./Pages/Combobox";
 
 export const routes: RouteObject[] = [
     {
@@ -23,7 +24,8 @@ export const routes: RouteObject[] = [
             { path: '/unauthorized', element: <Unauthorized /> },
             { path: '/databaseConnection', element: <DatabaseConnection /> },
             { path: '/userManagement', element: <UserManagement /> },
-            { path: '/changePassword', element: <ChangePassword /> }
+            { path: '/changePassword', element: <ChangePassword /> },
+            { path: '/combobox', element: <MyCombobox /> }
         ]
     }
 ]

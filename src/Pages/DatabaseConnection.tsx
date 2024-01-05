@@ -4,6 +4,8 @@ import { useStore } from "../Stores/store";
 import { observer } from "mobx-react-lite";
 import SpinnerButton from "../Helpers/SpinnerButton";
 import { toast } from "react-toastify";
+import { Combobox } from 'react-widgets';
+import "react-widgets/styles.css";
 
 const DatabaseConnection = () => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
@@ -19,13 +21,14 @@ const DatabaseConnection = () => {
 
     const { connectionStore, accountStore } = useStore();
     const { setDbConnection, servers, databases, isConnectionLoading, retrieveServers,
-        retrieveDatabases, currentServerAndDb, getCurrentServerAndDb } = connectionStore
+        retrieveDatabases, currentServerAndDb, getCurrentServerAndDb, setDatabases } = connectionStore
     const { loggedInUser } = accountStore
 
     useEffect(() => {
         getCurrentServerAndDb(loggedInUser!.id)
+        setDatabases([])
 
-        if (servers.length === 0 || databases.length === 0) {
+        if (servers.length === 0) {
             retrieveServers();
         }
     }, [])
@@ -48,61 +51,61 @@ const DatabaseConnection = () => {
         setIsLocked(!isLocked)
     }
 
+    const setServer = (value: string) => {
+        retrieveDatabases(value);
+        setServerName(value);
+    }
+
+    const setDatabase = (value: string) => {
+        setDatabaseName(value);
+    }
+
     return (
         <div id='connectionContainr'>
             <div id='connectionContent'>
-                <h1 className="text-success m-2">DATABASE CONNECTION STRING</h1>
+                <h1 className="text-success m-2 dbConnectionTitle">DATABASE CONNECTION STRING</h1>
 
-                <div className='connectionStatus m-1'>
+                <div className='connectionStatusDC m-1'>
                     {isConnectionLoading ? (<SpinnerButton />) : (
                         <span>
-                            <b>Server:</b> {currentServerAndDb.server} | <b>Database:</b> {currentServerAndDb.database}
+                            <b>Server:</b> {currentServerAndDb.server} <b>Database:</b> {currentServerAndDb.database}
                         </span>
                     )}
                 </div>
 
                 <div className="row connectionRow m-3">
-                    <select className='form-control connectionSelect' disabled={isLocked}
-                        onChange={(e) => {
-                            retrieveDatabases(e.target.value);
-                            setServerName(e.target.value);
-                        }}>
-
-                        <option disabled selected value="">---Server---</option>
-                        {servers.length > 0 && servers.map((item: string, key: number) => (
-                            <option key={key}>
-                                {item}
-                            </option>
-                        ))}
-                    </select>
+                    <Combobox
+                        disabled={isLocked}
+                        data={servers}
+                        placeholder="--Server--"
+                        filter="contains"
+                        onChange={setServer}
+                        value={serverName} />
                 </div>
 
 
                 <div className="row connectionRow m-3">
-                    <select className='form-control connectionSelect' disabled={isLocked}
-                        onChange={(e) => setDatabaseName(e.target.value)}>
-
-                        <option disabled selected value="">---Databases---</option>
-                        {databases.length > 0 && databases.map((item: string, key: number) => (
-                            <option key={key}>
-                                {item}
-                            </option>
-                        ))}
-                    </select>
+                    <Combobox
+                        disabled={isLocked}
+                        data={databases}
+                        placeholder="--Database--"
+                        filter="contains"
+                        onChange={setDatabase}
+                        value={databaseName} />
                 </div>
 
-                <div className="row connectionRow m-3 form-group">
-                    <div className="col-6">
+                <div className="row connectionRow form-group m-2">
+                    <div className="col-md-6 pl-2">
                         <input type="text" className='form-control' placeholder="Username..." disabled={isLocked}
                             onChange={(e) => setUserName(e.target.value)} ref={usernameField} />
                     </div>
 
 
-                    <div className="col-6 d-flex justify-content-center">
+                    <div className="col-md-6 d-flex justify-content-center passwordRegion">
                         <input type={showPassword ? 'text' : 'password'} className='form-control' disabled={isLocked}
                             placeholder="Password..." onChange={(e) => setPassword(e.target.value)} ref={passwordField} />
 
-                        <button className="btn btn-success mx-2" onClick={() => setShowPassword(!showPassword)}>
+                        <button className="btn btn-success mx-md-1" onClick={() => setShowPassword(!showPassword)}>
                             <i className={showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'}></i>
                         </button>
                     </div>
@@ -111,7 +114,7 @@ const DatabaseConnection = () => {
 
                 <div className="form-group">
                     <button style={{ backgroundColor: !isLocked ? '#006FCD' : '#107C10' }} disabled={isConnectionLoading}
-                        id="setConnection" onClick={() => setConnection()}>
+                        id="setConnectionBtn" onClick={() => setConnection()}>
                         {!isConnectionLoading ? (isLocked ? 'Setup Connection' : 'Save Connection') : <SpinnerButton />}
                     </button>
                 </div>

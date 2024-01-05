@@ -28,6 +28,7 @@ const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading, logged
 
         var encodedData = encodeURIComponent(JSON.stringify(queryString));
         navigate(`/query/${encodedData}`)
+
     }
 
     const setAccordionId = (groupName: string) => {
@@ -47,7 +48,7 @@ const QueryHistoryAccordion = ({ queryHistory, queryGroupName, isLoading, logged
 
                     <div id={setAccordionId(queryGroupName)} className="accordion-collapse collapse accordionContainer">
                         {queryHistory.length > 0 && !isLoading ? queryHistory.map((item: QueryHistory, key: number) => (
-                            <div className="accordion-body d-flex flex-row justify-content-between" key={key}>
+                            <div className="accordion-body d-flex justify-content-evenly" key={key}>
                                 <div style={{ width: '80%' }} className="p-1">
                                     <h5 className="queryTitle">{item.query}</h5>
                                     <p>Server: {item.server} | Database: {item.database}</p>

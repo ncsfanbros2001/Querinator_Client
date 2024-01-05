@@ -22,11 +22,11 @@ const QueryRecommendations = () => {
 
     return (
         <>
-            <div className='py-md-1'>
+            <div className='py-md-1 d-flex flex-column align-items-center'>
                 <h1 className="mt-5 text-center text-success titleText">Query Recommendations</h1>
 
                 <div className="d-flex justify-content-center">
-                    <div className='connectionStatus w-md-50'>
+                    <div className='connectionStatusQR w-md-50'>
                         <span>
                             <b>Server:</b> {currentServerAndDb.server} <b>Database:</b> {currentServerAndDb.database}
                         </span>

@@ -61,7 +61,7 @@ const SavedQueryAccordion = ({ savedQueries, queryGroupName, isLoading, executeQ
                                         <p>Server: {item.server} | Database: {item.database}</p>
                                     </div>
 
-                                    <div className="d-flex justify-content-evenly" style={{ width: '15%' }}>
+                                    <div id="buttonRegion">
                                         <button className='btn btn-success function-button' disabled={isLoading}
                                             onClick={() => execute(item.query)}>
                                             <i className="bi bi-lightning"></i>
