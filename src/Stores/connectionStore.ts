@@ -72,7 +72,6 @@ export default class ConnectionStore {
             })
             .catch((error: any) => {
                 toast.error(error?.response?.data?.errorMessage)
-                console.log(error)
             })
 
         this.setIsLoading(false)
